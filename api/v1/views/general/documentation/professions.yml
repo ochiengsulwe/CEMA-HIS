@@ -1,0 +1,13 @@
+summary: Retrieves all available medical professions by name
+tags:
+  - Collectives
+responses:
+  200:
+    description: Successfully retrieved list of profession names
+    schema:
+      type: array
+      items:
+        type: string
+        example: "Doctor"
+  500:
+    description: Internal server error

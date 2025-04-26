@@ -1,0 +1,63 @@
+summary: Retrieve a specific diagnostic test by ID
+tags:
+  - Diagnostic Tests
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: diagnostsic_test_id
+    in: path
+    required: true
+    type: string
+    description: Unique identifier of the diagnostic test
+    example: "9f381d6c-8763-4131-8133-1edbd87aa660"
+responses:
+  200:
+    description: Successfully retrieved diagnostic test details
+    schema:
+      type: object
+      properties:
+        test_id:
+          type: string
+          example: "9f381d6c-8763-4131-8133-1edbd87aa660"
+        test_name:
+          type: string
+          example: "Malaria Rapid Test"
+        test_for:
+          type: string
+          example: "Used to detect malaria parasite in the blood"
+  401:
+    description: User not signed in
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not signed in"
+  403:
+    description: Unauthorized access
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+  404:
+    description: Test not found or user not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "test not found"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "An unexpected error occurred"

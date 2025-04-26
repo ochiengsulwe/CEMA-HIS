@@ -1,0 +1,79 @@
+tags:
+  - Adult Diagnosis
+summary: Retrieve all diagnoses for the authenticated adult
+description: >
+  Retrieves all diagnoses for the authenticated adult user, grouped by date.
+  Only adults can access their own diagnoses through this endpoint.
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+responses:
+  200:
+    description: Successful retrieval of diagnoses grouped by date
+    schema:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          type: object
+          properties:
+            diagnosis:
+              type: string
+              description: Diagnosis description
+              example: "Acute Bronchitis"
+            severity:
+              type: string
+              description: Severity of the diagnosis
+              example: "Moderate"
+            prognosis:
+              type: string
+              description: Prognosis related to the diagnosis
+              example: "Good with treatment"
+            diagnosed_by:
+              type: string
+              description: Full name of the diagnosing practitioner
+              example: "John Mboya Odhiambo"
+            schedule_id:
+              type: string
+              description: ID of the schedule linked to the diagnosis
+              example: "abc123"
+            appointment_id:
+              type: string
+              description: ID of the appointment linked to the diagnosis
+              example: "xyz456"
+  401:
+    description: Unauthorized access due to missing or invalid token
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not signed in"
+  403:
+    description: Forbidden - user is not an adult
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+  404:
+    description: No diagnoses found
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "no diagnoses found"
+  500:
+    description: Internal Server Error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "an unexpected error occurred"

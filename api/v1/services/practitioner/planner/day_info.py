@@ -1,0 +1,67 @@
+"""
+The module retreives a practitioner's slot/day object info
+"""
+from flask import jsonify
+
+from flask_jwt_extended import get_jwt_identity
+
+from sqlalchemy.exc import IntegrityError
+
+from api.v1 import db
+
+from models import storage
+from models.loginfo import LogInfo
+from models.planner import Planner
+from models.slot import Slot
+
+from utils.support import week_of_month
+
+
+def day_info(slot_id):
+    """
+    Retrieves a slot/day information for a practitioner.
+
+    Args:
+        slot_id (str): the day's unique ID
+
+    Returns:
+        tuple: slot info on success (or error message), with a matching HTTP code
+    """
+    try:
+        current_user_id = get_jwt_identity()
+        if not current_user_id:
+            return jsonify({'error': 'not signed in'}), 401
+
+        prac = storage.get(LogInfo, current_user_id)
+        if not prac:
+            return jsonify({'error': 'practitioner logins not found'}), 404
+        practitioner = prac.prac_profile
+        if practitioner is None:
+            return jsonify({'error': 'practitioner not found'}), 404
+        planner = Planner.query.filter_by(prac_profile_id=practitioner.id).first()
+        if not planner:
+            return jsonify({"error": "no planner yet."}), 404
+        slot = storage.get(Slot, slot_id)
+        if not slot:
+            return jsonify({"error": "slot not found."}), 404
+
+        if slot not in practitioner.planner.slots:
+            return jsonify({"error": "not authorised"}), 403
+
+        s_info = {
+            "id": slot.id,
+            "date": slot.date.strftime('%Y-%m-%d'),
+            "day": slot.date.strftime('%A'),
+            "day_of_year": slot.date.strftime('%j'),
+            "week_of_year": slot.date.strftime('%U'),
+            "week_of_month": str(week_of_month(slot.date))
+        }
+        return jsonify(s_info), 200
+    except IntegrityError as e:
+        db.session.rollback()
+        return {"error": "Database error occurred.", "details": str(e)}
+    except ValueError as e:
+        return {"error": str(e)}
+    except Exception as e:
+        db.session.rollback()
+        return {"error": "An unexpected error occurred.", "details": str(e)}

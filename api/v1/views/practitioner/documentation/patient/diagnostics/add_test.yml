@@ -1,0 +1,91 @@
+summary: Add one or more diagnostic tests to an existing test order
+tags:
+  - Patients
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: test_order_id
+    in: path
+    type: string
+    required: true
+    description: The unique identifier of the test order
+    example: "b07d9859-19b7-4653-bd96-79e193bb54a3"
+  - name: Body
+    in: body
+    required: true
+    description: Body should contain the tests to be added
+    schema:
+      type: object
+      required:
+        - tests
+      properties:
+        tests:
+          type: array
+          items:
+            type: object
+            required:
+              - test_id
+            properties:
+              test_id:
+                type: string
+                description: The ID of the diagnostic test
+                example: "56c70fbd-2c8c-4f6e-849e-5b34fdfe3e5e"
+              status:
+                type: string
+                description: Status of the test in the order
+                enum: ["waiting", "complete"]
+                example: "waiting"
+
+responses:
+  201:
+    description: Tests successfully added to TestOrder
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Tests successfully added to TestOrder"
+  400:
+    description: Missing or invalid fields
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Missing field: tests"
+  401:
+    description: Unauthorized
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Authentication required"
+  403:
+    description: Access forbidden or unauthorized practitioner
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "You are not authorized to perform this action"
+  404:
+    description: TestOrder or DiagnosticTest not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "TestOrder not found"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Unexpected error occurred"

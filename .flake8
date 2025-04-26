@@ -1,0 +1,17 @@
+[flake8]
+exclude = venv, .git, __pycache__, node_modules, migrations
+
+max-line-length = 88
+
+per-file-ignores =
+    ./api/v1/__init__.py: F401, F841, F811
+    ./api/v1/views/__init__.py: F401, E402, F811
+    ./api/v1/views/auth/__init__.py: F401, E402, F811
+    ./api/v1/views/general/__init__.py: F401, E402, F811
+    ./api/v1/views/patient/__init__.py: F401, E402, F811
+    ./api/v1/views/practitioner/__init__.py: F401, E402, F811
+    ./api/v1/views/unit/general/__init__.py: F401, E402, F811
+    ./utils/proxy/data/prescription/route_data.py: F401, E402, F811, E501
+    ./utils/proxy/data/prescription/chemos.py: F401, E402, F811, E501
+    ./utils/proxy/data/prescription/psychotherapies.py: F401, E402, F811, E501
+    ./utils/proxy/data/health_programs.py: F401, E402, F811, E501

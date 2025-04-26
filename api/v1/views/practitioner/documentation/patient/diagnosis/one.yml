@@ -1,0 +1,66 @@
+summary: Retrieves patient's diagnosis information
+tags:
+  - Patients
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: schedule_id
+    in: path
+    required: true
+    type: string
+    description: unique running appointment identifier
+    example: "d8c18f05-ca56-4524-b562-fa5d8d6bc96a"
+responses:
+  20o:
+    description: Diagnosis successfully retrieved
+    schema:
+      type: object
+      properties:
+        entered_on:
+          type: string
+          format: datetime
+          example: "2025-12-11"
+        on_day:
+          type: string
+          format: datetime
+          example: "Wednesday"
+        entered_at:
+          type: string
+          format: datetime
+          example: "13:11"
+        diagnosis:
+          type: string
+          format: text
+          example: "severe jaundice"
+        prognosis:
+          type: string
+          format: text
+          example: "eat well each day"
+  400:
+    description: Invalid request body
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Missing field: <schedule_id>"
+  403:
+    description: Unauthorized access or permissions denied
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "unauthorized access"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Internal server error"

@@ -1,0 +1,94 @@
+summary: Creates a new Adult Patient Account.
+tags:
+  - Create Account
+parameters:
+  - name: body
+    description: The body should contain the user account creation details
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - email
+        - password
+        - phone_number
+        - id_number
+      properties:
+        email:
+          type: string
+          format: email
+          example: "patient@example.com"
+        password:
+          type: string
+          format: password
+          example: "s3Cre7E!"
+        phone_number:
+          type: string
+          example: "+1234567890"
+        id_number:
+          type: integer
+          example: 7105
+responses:
+  201:
+    description: Successfully created a new patient account.
+    schema:
+      type: object
+      properties:
+        created_at:
+          type: string
+          example: "2024-09-11T07:33:55"
+        first_name:
+          type: string
+          example: "Mary"
+        last_name:
+          type: string
+          example: "Wahu"
+        email:
+          type: string
+          format: "email"
+          example: "patient@example.com"
+        phone_number:
+          type: string
+          example: "+1234567890"
+        id_number:
+          type: integer
+          example: 7105
+        gender:
+          type: string
+          example: "Female"
+        message:
+          type: string
+          example: "account for (Mary) was created successfully"
+        updated_at:
+          type: string
+          example: "2024-09-11T07:33:55"
+        id:
+          type: string
+          example: "a0913ee0-effd-442b-9547-f3d5576c132f"
+        date_of_birth:
+          type: string
+          example: "Sat, 30 Sep 1978 00:00:00 GMT"
+  400:
+    description: Invalid request body.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "not json"
+  409:
+    description: Conflict - The email is already in use or the patient account for the ID exists.
+    schema:
+      type: object
+      properties:
+        error:
+          type: "string"
+          example: "The email patient@example.com already in use for account type patient"
+  409:
+    description: Conflict - The patient account for the ID exists.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "patient account for ID 7105 exists"

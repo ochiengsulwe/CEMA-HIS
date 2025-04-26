@@ -1,0 +1,58 @@
+summary: Cancel an existing appointment with a patient
+tags:
+  - Patients
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: schedule_id
+    in: path
+    required: true
+    schema:
+      type: string
+    description: The ID of the appointment schedule to be rescheduled
+    example: "6e6795d7b-45fd-4211-873b-03fc49e7761f"
+responses:
+  200:
+    description: Appointment cancelled successfully
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Appointment cancelled successfully"
+  400:
+    description: Invalid request or missing fields
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Missing field: schedule_id"
+  403:
+    description: Unauthorized action
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Unauthorized action. Cannot cancel this appointment"
+  404:
+    description: User logs not found or appointment not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "User logs not found or Invalid appointment_id"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Internal server error"

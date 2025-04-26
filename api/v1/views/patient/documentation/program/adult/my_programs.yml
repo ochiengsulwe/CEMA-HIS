@@ -1,0 +1,63 @@
+tags:
+  - Adult Programs
+summary: List all health programs an adult patient is enrolled in
+description: >
+  Retrieves all health programs the authenticated adult patient is enrolled in.
+  Each program includes the practitioner's name, description, start date, and end date.
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+responses:
+  200:
+    description: Successful retrieval of enrolled programs
+    schema:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          type: object
+          properties:
+            practitioner:
+              type: string
+              example: "Dr. Jane Doe"
+            start_date:
+              type: string
+              example: "2025-05-01"
+            end_date:
+              type: string
+              example: "2025-08-01"
+            description:
+              type: string
+              example: "A comprehensive health program for managing diabetes."
+  401:
+    description: Unauthorized access due to missing or invalid token
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not signed in"
+  404:
+    description: Patient profile not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "profile not found"
+  500:
+    description: Internal Server Error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "database error"
+        details:
+          type: string
+          example: "OperationalError"
+

@@ -1,0 +1,64 @@
+summary: Retrieve a single appointment schedule details for an authenticated adult user
+tags:
+  - Appointments
+parameters:
+  - name: Authorization
+    in: header
+    required: true
+    description: Bearer token for user authentication
+    type: string
+    example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  - name: schedule_id
+    in: path
+    required: true
+    schema:
+      type: string
+    description: The ID of the appointment schedule to retrieve
+    example: "66795d7b-45fd-4211-873b-03fc49e7761f"
+responses:
+  200:
+    description: Successfully retrieved the appointment schedule
+    schema:
+      type: object
+      properties:
+        appointment:
+          type: object
+          description: The appointment details
+          example:
+            id: "66795d7b-45fd-4211-873b-03fc49e7761f"
+            date: "2024-12-05"
+            time_from: "09:00"
+            time_to: "10:00"
+            status: "confirmed"
+  400:
+    description: Invalid request payload
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Invalid request payload"
+  403:
+    description: Unauthorized access
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+  404:
+    description: Appointment or profile not found
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Appointment not found"
+  500:
+    description: Unexpected server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "An unexpected error occurred"

@@ -1,0 +1,49 @@
+summary: Marks an appointment as repeat making it recurrent ( > 1 schedule entries )
+tags:
+  - Patients
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: appointment_id
+    description: The appointment to mark as repeat
+    in: path
+    required: true
+    type: string
+    example: "d8c18f05-ca56-4524-b562-fa5d8d6bc96a"
+responses:
+  201:
+    description: Appointment successfully updated
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Appointment successfully updated"
+  400:
+    description: Invalid request body
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Missing field: appointment_id"
+  403:
+    description: Unauthorized access or permissions denied
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "unauthorized access"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Internal server error"

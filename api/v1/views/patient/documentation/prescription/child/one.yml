@@ -1,0 +1,96 @@
+tags:
+  - Child Prescription
+summary: Retrieve a specific prescription by ID
+description: >
+  Retrieves a specific prescription for the authenticated adult user's child,
+  based on the prescription ID.
+  No status filtering is applied; the prescription must simply belong to the child.
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: prescription_id
+    in: path
+    type: string
+    required: true
+    description: ID of the prescription to retrieve
+    example: "123e4567-e89b-12d3-a456-426614174000"
+  - name: child_id
+    in: path
+    required: true
+    type: string
+    description: The child's ID
+    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+responses:
+  200:
+    description: Successful retrieval of the prescription
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          prescription_id:
+            type: string
+            example: "123e4567-e89b-12d3-a456-426614174000"
+          status:
+            type: string
+            example: "issued"
+          category:
+            type: string
+            example: "medication"
+          sub_category:
+            type: string
+            example: "oral"
+          name:
+            type: string
+            example: "Amoxicillin 500mg"
+          note:
+            type: string
+            example: "Take one tablet every 8 hours after meals."
+          frequency:
+            type: string
+            example: "3 times a day"
+          prescribed_by:
+            type: string
+            example: "Dr. Jane Doe"
+          prescription_date:
+            type: string
+            example: "2025-04-26"
+  401:
+    description: Unauthorized access due to missing or invalid token
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not signed in"
+  403:
+    description: Forbidden - user not authorized to access this prescription
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+  404:
+    description: Prescription not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "prescription not found"
+  500:
+    description: Internal Server Error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "database error"
+        details:
+          type: string
+          example: "OperationalError"

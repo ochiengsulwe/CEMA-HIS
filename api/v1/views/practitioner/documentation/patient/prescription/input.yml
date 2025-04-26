@@ -1,0 +1,132 @@
+summary: Add one or more prescription entries to a patient's prescription record
+tags:
+  - Patient Prescriptions
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: prescription_id
+    in: path
+    type: string
+    required: true
+    description: The unique identifier of the PatientPrescription
+    example: "b1f6ecfa-2e3c-456a-9440-10b3456d5c4a"
+  - name: Body
+    in: body
+    required: true
+    description: Body should contain one or more prescription entries to be recorded
+    schema:
+      type: object
+      required:
+        - entries
+      properties:
+        entries:
+          type: array
+          items:
+            type: object
+            required:
+              - category
+              - name
+            properties:
+              category:
+                type: string
+                description: Category of the prescription (e.g., medication, therapy)
+                example: "medication"
+              sub_category:
+                type: string
+                description: Optional sub-category of the prescription
+                example: "buccal"
+              name:
+                type: string
+                description: Name of the prescribed item
+                example: "Amoxicillin 500mg"
+              note:
+                type: string
+                description: Optional note from the practitioner
+                example: "Take after meals"
+              frequency:
+                type: object
+                required:
+                  - start_date
+                  - start_time
+                  - routine
+                properties:
+                  start_date:
+                    type: string
+                    format: date
+                    description: Start date for the prescription
+                    example: "2025-04-17"
+                  start_time:
+                    type: string
+                    format: time
+                    description: Time of day to begin prescription
+                    example: "08:00"
+                  routine:
+                    type: string
+                    description: Pattern of repetition (e.g., daily, weekly)
+                    example: "daily"
+                  times:
+                    type: integer
+                    description: Number of times per routine
+                    example: 3
+                  duration:
+                    type: integer
+                    description: Duration of the prescription (e.g., 5 days)
+                    example: 5
+                  for_:
+                    type: string
+                    description: Target or condition this prescription is for
+                    example: "days"
+
+responses:
+  201:
+    description: Prescriptions successfully recorded
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "prescription(s) entered successfully"
+  400:
+    description: Missing required fields or invalid body
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Missing fields in entry: ['category', 'name']"
+  401:
+    description: Unauthorized (missing or invalid token)
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Authentication required"
+  403:
+    description: Access forbidden due to lack of permission
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+  404:
+    description: Practitioner or prescription record not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "prescription entry not found"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Unexpected error occurred"

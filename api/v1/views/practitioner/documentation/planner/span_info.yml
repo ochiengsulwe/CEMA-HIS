@@ -1,0 +1,61 @@
+tags:
+  - Planner
+summary: Retrieves a span information for a specific time span for a practitioner
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"  
+  - name: slot_id
+    in: path
+    required: true
+    description: slot's unique ID
+    example: "ID233226"
+  - name: span_id
+    in: path
+    required: true
+    description: span's unique ID
+    example: "ID23456"
+responses:
+  200:
+    description: Planner retrieved successfully
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: {"id": "ID222", "time_from": "09:10", "time_to": "09:20"}
+  400:
+    description: Bad request due to invalid input or overlapping time slots
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Time slot overlaps with existing slot 09:30 to 10:30."
+  401:
+    description: Unauthorized due to missing or invalid token
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Missing Authorization Header"
+  404:
+    description: Resource not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Span not Found"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "An unexpected error occurred."

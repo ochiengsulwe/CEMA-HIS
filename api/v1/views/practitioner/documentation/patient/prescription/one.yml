@@ -1,0 +1,102 @@
+summary: Retrieve a single prescription entry with full frequency details
+tags:
+  - Patient Prescriptions
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: prescription_entry_id
+    in: path
+    type: string
+    required: true
+    description: The unique identifier of the prescription entry
+    example: "5eaa52fb-88b5-4fc9-b928-d1d02ed97ec4"
+
+responses:
+  200:
+    description: Prescription entry retrieved successfully
+    schema:
+      type: object
+      properties:
+        entry:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "5eaa52fb-88b5-4fc9-b928-d1d02ed97ec4"
+            name:
+              type: string
+              example: "Ibuprofen"
+            note:
+              type: string
+              example: "Take with food"
+            category:
+              type: string
+              example: "Pain relief"
+            sub_category:
+              type: string
+              example: "NSAID"
+            frequency:
+              type: object
+              nullable: true
+              properties:
+                start_date:
+                  type: string
+                  format: date
+                  example: "2025-04-17"
+                start_time:
+                  type: string
+                  format: time
+                  example: "08:00:00"
+                routine:
+                  type: string
+                  example: "Daily"
+                times:
+                  type: integer
+                  example: 2
+                duration:
+                  type: integer
+                  example: 5
+                for_:
+                  type: string
+                  example: "Inflammation"
+                end_date:
+                  type: string
+                  format: date
+                  example: "2025-04-22"
+                at_:
+                  type: array
+                  items:
+                    type: string
+                    format: time
+                    example: "08:00:00"
+
+  403:
+    description: Access forbidden due to invalid authentication
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Not authorized"
+
+  404:
+    description: User or prescription entry not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Prescription entry not found"
+
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Unexpected error occurred"

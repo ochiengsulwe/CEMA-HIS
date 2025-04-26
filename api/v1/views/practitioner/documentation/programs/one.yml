@@ -1,0 +1,72 @@
+tags:
+  - Practitioner Program
+summary: Retrieve a health program by ID
+description: >
+  Retrieves the details of a single health program by its unique ID.
+  Only authenticated practitioners can access this endpoint.
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: program_id
+    in: path
+    required: true
+    type: string
+    description: The unique ID of the health program to retrieve
+    example: "123e4567-e89b-12d3-a456-426614174000"
+responses:
+  200:
+    description: Successful retrieval of health program
+    schema:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        name:
+          type: string
+          example: "HIV Care Program"
+        description:
+          type: string
+          example: "A program aimed at providing HIV prevention, care, and treatment services."
+  401:
+    description: Unauthorized access due to missing or invalid token
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not signed in"
+  403:
+    description: Forbidden - user is not a practitioner
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+  404:
+    description: Health program or user not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "health program not found"
+        message:
+          type: string
+          example: "user not found"
+  500:
+    description: Internal Server Error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "database error"
+        details:
+          type: string
+          example: "OperationalError"

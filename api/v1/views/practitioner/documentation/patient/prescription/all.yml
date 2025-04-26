@@ -1,0 +1,92 @@
+summary: Retrieve all entries under a specific prescription, grouped by category and sub_category
+tags:
+  - Patient Prescriptions
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: prescription_id
+    in: path
+    type: string
+    required: true
+    description: The unique identifier of the prescription
+    example: "3c3c58d4-40ab-4de6-90a4-355d2a3c129f"
+
+responses:
+  200:
+    description: Prescription entries retrieved and grouped successfully
+    schema:
+      type: object
+      properties:
+        entries:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "f5e3c731-cd7b-45ce-b07f-4c7de3a725ff"
+                  name:
+                    type: string
+                    example: "Paracetamol"
+                  note:
+                    type: string
+                    example: "Take after meals"
+                  frequency:
+                    type: object
+                    nullable: true
+                    properties:
+                      id:
+                        type: string
+                        example: "234ab678-cd89-41ce-93aa-b04d29f47d22"
+                      start_date:
+                        type: string
+                        format: date
+                        example: "2025-04-17"
+                      start_time:
+                        type: string
+                        format: time
+                        example: "08:00:00"
+                      routine:
+                        type: string
+                        example: "daily"
+                      times:
+                        type: integer
+                        example: 3
+                      duration:
+                        type: integer
+                        example: 7
+                      for_:
+                        type: string
+                        example: "days"
+  403:
+    description: Access forbidden due to invalid authentication
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+  404:
+    description: User or prescription not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "prescription not found"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Unexpected error occurred"

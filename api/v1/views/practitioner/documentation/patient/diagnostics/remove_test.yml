@@ -1,0 +1,63 @@
+summary: Remove a diagnostic test from a Test Order
+tags:
+  - Diagnostic Tests
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: test_order_id
+    in: path
+    required: true
+    type: string
+    description: Unique identifier of the test order
+    example: "47d289cf-33e4-4ea9-b36c-c3de2e4e2ac7"
+  - name: diagnostic_test_id
+    in: path
+    required: true
+    type: string
+    description: Unique identifier of the diagnostic test to be removed
+    example: "62a3472d-d13c-4cde-92b3-d1ff91b2cbe2"
+responses:
+  200:
+    description: Test successfully removed
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "test successfully removed from order"
+  401:
+    description: Not authenticated
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not signed in"
+  403:
+    description: Unauthorized
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+  404:
+    description: Test or TestOrder not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "test not part of this order"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Internal server error"

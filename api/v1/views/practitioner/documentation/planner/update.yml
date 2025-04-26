@@ -1,0 +1,77 @@
+tags:
+  - Planner
+summary: Updates a planner for a practitioner
+description: >
+  Allows a practitioner to update a planner's span entry
+  The service validates that if the new span overlaps with any existing span, they are merged to form one
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: span_id
+    in: path
+    required: true
+    type: string
+    description: The span id to be updated
+    example: "hhjaudd"
+  - name: body
+    in: body
+    required: true
+    description: JSON payload containing date and time details
+    schema:
+      type: object
+      properties:
+        new_time_from:
+          type: string
+          format: time
+          description: The start time in `HH:mm` format
+          example: "09:00"
+        new_time_to:
+          type: string
+          format: time
+          description: The end time in `HH:mm` format
+          example: "10:00"
+responses:
+  201:
+    description: Planner created successfully
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Planner updated successfully."
+  400:
+    description: Bad request due to invalid input or overlapping time slots
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Start time must be greater than end time"
+  401:
+    description: Unauthorized due to missing or invalid token
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Missing Authorization Header"
+  409:
+    description: Duplicate entry
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "You've entered the same span as the previous"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "An unexpected error occurred."

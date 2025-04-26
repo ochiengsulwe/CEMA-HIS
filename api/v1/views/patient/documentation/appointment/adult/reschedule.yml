@@ -1,0 +1,91 @@
+summary: Reschedule an existing appointment of an adult user with a practitioner
+tags:
+  - Appointments
+parameters:
+  - name: Authorization
+    in: header
+    schema:
+      type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: schedule_id
+    in: path
+    type: string
+    required: true
+    description: A datetime component of an appointment
+    example: "d6375ee0-fe65-4141-a48e-43f945cbddfw"
+  - name: body
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - date
+        - time_from
+        - time_to
+      properties:
+        date:
+          type: string
+          format: date
+          description: The appointment date
+          example: "2025-12-10"
+        time_from:
+          type: string
+          format: time
+          description: Appointment start time
+          example: "09:35"
+        time_to:
+          type: string
+          format: time
+          description: Appointment end time
+          example: "10:00"
+responses:
+  200:
+    description: Appointment rescheduled successfully
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Appointment rescheduled successfully"
+  400:
+    description: Invalid request or missing fields
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Missing field: reschedule_id"
+  403:
+    description: Unauthorized action
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Unauthorized action. Cannot reschedule another user_id's appointment"
+  404:
+    description: User logs not found or appointment not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "User logs not found or Invalid appointment_id"
+  409:
+    description: Existing Entry
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "You have an appointment at the same time. Please choose another time"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Internal server error"

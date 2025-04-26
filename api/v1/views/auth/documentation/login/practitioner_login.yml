@@ -1,0 +1,31 @@
+summary: Logs in a user into a  Practitioner Account.
+tags:
+  - Login
+parameters:
+  - name: body
+    description: The body should contain the user login credentials
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: "practitioner@example.com"
+        password:
+          type: string
+          format: password
+          example: "secret"
+responses:
+  200:
+    description: Successfully logged in.
+
+  400:
+    description: Failed to log in due invalid request body.
+
+  401:
+    description: Invalid email or password.

@@ -1,0 +1,59 @@
+summary: Retrieves healthcare workers by profession and specialization.
+tags:
+  - Collectives
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authorization
+    example: "Bearer <JWT_TOKEN>"
+  - name: professions
+    in: query
+    description: List of profession names to filter healthcare workers
+    required: true
+    type: array
+    items:
+      type: string
+    example: ["Doctor", "Nurse", "Pharmacist"]
+  - name: specialization
+    in: query
+    description: Specialization field to filter healthcare workers
+    required: true
+    type: string
+    example: "Dermatology"
+responses:
+  200:
+    description: Successfully retrieved specialist
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            example: "kkk556llll2222lll22mk"
+          first_name:
+            type: string
+            example: "John"
+          last_name:
+            type: string
+            example: "Doe"
+          email:
+            type: string
+            format: email
+            example: "john.doe@example.com"
+          profession:
+            type: string
+            example: "Doctor"
+          specialization:
+            type: string
+            example: "Dermatology"
+  400:
+    description: Invalid request parameters
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Invalid profession or specialization"

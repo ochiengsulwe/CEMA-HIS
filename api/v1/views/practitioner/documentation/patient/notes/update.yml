@@ -1,0 +1,69 @@
+summary: Updates practitoner's note
+tags:
+  - Patients
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: schedule_id
+    in: path
+    required: true
+    type: string
+    description: unique running appointment identifier
+    example: "d8c18f05-ca56-4524-b562-fa5d8d6bc96a"
+  - name: Body
+    description: The body should contain notes and assessment information.
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - note
+        - assessment
+      properties:
+        note:
+          type: string
+          format: text
+          description: description of patient's symptoms from objective and subjective analysis
+          example: "this is an example of a new note from the patient symptoms to add."
+        assessment:
+          type: string
+          format: text
+          description: an hypothesis of what the patient might be suffering from. Dedeuced from notes
+          example: "from patient's symptom new notes, the patient seems to be suffering from A or B, and thus I recommend X test to verify."
+responses:
+  201:
+    description: Note successfully updated
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Note successfully updated"
+  400:
+    description: Invalid request body
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Missing field: assessment"
+  403:
+    description: Unauthorized access or permissions denied
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "unauthorized access"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Internal server error"

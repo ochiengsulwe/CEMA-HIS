@@ -1,0 +1,90 @@
+summary: Creates a new Practitioner Account without an attached facility.
+description: >
+  Creates a new Practitioner Account. Before calling this endpoint, ensure to fetch the available profession types 
+  by calling the `/all/professions` endpoint to provide a valid profession_type in the request body.
+tags:
+  - Create Account
+parameters:
+  - name: body
+    description: The body should contain the user account creation details
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - email
+        - password
+        - profession_reg
+        - profession_type
+        - phone_number
+      properties:
+        email:
+          type: string
+          format: email
+          example: "practitioner@example.com"
+        password:
+          type: string
+          format: password
+          example: "secret"
+        profession_reg:
+          type: string
+          example: "N456789"
+        profession_type:
+          type: string
+          example: "Nurse"
+        fee:
+          type: integer
+          example: 2500
+        phone_number:
+          type: string
+          example: "+2547150000"
+responses:
+  201:
+    description: Successfully created a new practitioner account.
+    schema:
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: "John"
+        last_name:
+          type: string
+          example: "Doe"
+        email:
+          type: string
+          format: email
+          example: "practitioner@example.com"
+        phone_number:
+          type: string
+          example: "+1234567890"
+        id_number:
+          type: integer
+          example: 12345678
+        profession_type:
+          type: string
+          example: "Nurse"
+        message:
+          type: string
+          example: "account for (John) was created successfully"
+  400:
+    description: Invalid request body or profession type.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "not json"
+        error:
+          type: string
+          example: "The profession type Cardiologist is not valid"
+  409:
+    description: Conflict - The email is already in use or the practitioner account for the ID exists.
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "The email practitioner@example.com already in use for account type practitioner"
+        message:
+          type: string
+          example: "practitioner account for ID 12345678 exists"

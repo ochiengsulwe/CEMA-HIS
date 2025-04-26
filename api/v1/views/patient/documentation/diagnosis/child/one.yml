@@ -1,0 +1,88 @@
+tags:
+  - Child Diagnosis
+summary: Retrieve a specific diagnosis for a child
+description: >
+  Retrieves the details of a specific diagnosis for a child by diagnosis ID.
+  Only authenticated parents who are authorized to access the child's information can access this endpoint.
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: child_id
+    in: path
+    required: true
+    type: string
+    description: The unique ID of the child whose diagnosis is being retrieved
+    example: "123e4567-e89b-12d3-a456-426614174111"
+  - name: diagnosis_id
+    in: path
+    required: true
+    type: string
+    description: The unique ID of the diagnosis to retrieve
+    example: "987e6543-e21c-34b1-b765-123451234567"
+responses:
+  200:
+    description: Successful retrieval of diagnosis
+    schema:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "987e6543-e21c-34b1-b765-123451234567"
+        diagnosis:
+          type: string
+          example: "Acute Respiratory Infection"
+        severity:
+          type: string
+          example: "Moderate"
+        prognosis:
+          type: string
+          example: "Good recovery expected within 2 weeks"
+        schedule_id:
+          type: string
+          example: "schedule-uuid-example"
+        appointment_id:
+          type: string
+          example: "appointment-uuid-example"
+        diagnosed_by:
+          type: string
+          example: "John Michael Doe"
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-04-26 15:30:00"
+  401:
+    description: Unauthorized access due to missing or invalid token
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not signed in"
+  403:
+    description: Forbidden - user not authorized to access the child's diagnosis
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+  404:
+    description: Child or diagnosis not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "child not found"
+  500:
+    description: Internal Server Error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "database error"

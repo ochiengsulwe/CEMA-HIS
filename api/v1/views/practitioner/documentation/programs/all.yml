@@ -1,0 +1,69 @@
+tags:
+  - Practitioner Program
+summary: Retrieve all available health programs
+description: >
+  Retrieves a list of all health programs available in the system.
+  Only accessible to authenticated users of type 'practitioner'.
+  The response includes each program's id, name, and description.
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+responses:
+  200:
+    description: Successful retrieval of health programs
+    schema:
+      type: object
+      properties:
+        programs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: "123e4567-e89b-12d3-a456-426614174000"
+              name:
+                type: string
+                example: "Malaria Prevention Program"
+              description:
+                type: string
+                example: "An awareness program focused on prevention of malaria."
+  401:
+    description: Unauthorized access due to missing or invalid token
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not signed in"
+  403:
+    description: Forbidden - user is not a practitioner
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+  404:
+    description: User not found
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "user not found"
+  500:
+    description: Internal Server Error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "database error"
+        details:
+          type: string
+          example: "OperationalError"

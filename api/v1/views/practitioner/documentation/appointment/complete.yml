@@ -1,0 +1,49 @@
+summary: Marks an appointment/appointment schedule as complete
+tags:
+  - Appointments
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: schedule_id
+    description: The appointment schedule to mark as complete
+    in: path
+    required: true
+    type: string
+    example: "d8c18f05-ca56-4524-b562-fa5d8d6bc96a"
+responses:
+  201:
+    description: Appointment completed
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Appointment successfully completed"
+  400:
+    description: Invalid request body
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Missing field: appointment_id"
+  403:
+    description: Unauthorized access or permissions denied
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "unauthorized access"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Internal server error"

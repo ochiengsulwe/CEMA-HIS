@@ -1,0 +1,83 @@
+summary: Adds a schedule to appointment entry
+tags:
+  - Patients
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: appointment_id
+    in: path
+    required: true
+    type: string
+    description: unique appointment identifier
+    example: "d8c18f05-ca56-4524-b562-fa5d8d6bc96a"
+  - name: Body
+    description: The body should contain the appointment booking information.
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - date
+        - time_from
+        - time_to
+      properties:
+        date:
+          type: string
+          format: date
+          description: the deseired date of the appointment(YYYY-MM-DD)
+          example: "2025-12-10"
+        time_from:
+          type: string
+          format: time
+          description: the desired appointment start time(HH:MM)
+          example: "09:00"
+        time_to:
+          type: string
+          format: time
+          description: the desired appointment end time(HH:MM)
+          example: "09:30"
+responses:
+  201:
+    description: Appointment successfully updated
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Schedule successfully created"
+  400:
+    description: Invalid request body
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Missing field: practitioner_id"
+  403:
+    description: Unauthorized access or permissions denied
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "unauthorized access"
+  409:
+    description: Duplicate entry
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "You have an appointment at the same time. Please choose another time"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Internal server error"

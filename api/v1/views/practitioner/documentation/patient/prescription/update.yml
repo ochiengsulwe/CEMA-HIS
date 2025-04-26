@@ -1,0 +1,128 @@
+summary: Update frequency details for a prescription entry
+tags:
+  - Patient Prescriptions
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for practitioner authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: prescription_entry_id
+    in: path
+    type: string
+    required: true
+    description: The ID of the PrescriptionEntry to update
+    example: "2e6f89a1-04f4-4f71-8c65-1ad987b75e5b"
+
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          start_date:
+            type: string
+            format: date
+            example: "2025-04-17"
+          end_date:
+            type: string
+            format: date
+            example: "2025-05-01"
+          routine:
+            type: string
+            example: "daily"
+          times:
+            type: integer
+            example: 3
+          duration:
+            type: integer
+            description: Duration in days
+            example: 7
+          for_:
+            type: string
+            description: Condition/duration being treated
+            example: "days"
+          start_time:
+            type: string
+            format: time
+            example: "08:00:00"
+
+responses:
+  200:
+    description: Frequency updated successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: "Frequency updated successfully"
+            frequency:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "fa02b3c2-13c5-4ef5-84e4-5f19c72ec4f4"
+                start_date:
+                  type: string
+                  example: "2025-04-17"
+                end_date:
+                  type: string
+                  example: "2025-05-01"
+                routine:
+                  type: string
+                  example: "daily"
+                times:
+                  type: integer
+                  example: 3
+                duration:
+                  type: integer
+                  example: 7
+                for_:
+                  type: string
+                  example: "days"
+                start_time:
+                  type: string
+                  example: "08:00:00"
+                at_:
+                  type: array
+                  items:
+                    type: string
+                    format: time
+                  example: ["08:00:00", "14:00:00", "20:00:00"]
+
+  403:
+    description: Unauthorized
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              example: "Not authorized"
+
+  404:
+    description: Entry or frequency not found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              example: "Frequency data not found for this entry"
+
+  500:
+    description: Server error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              example: "Invalid value for times"

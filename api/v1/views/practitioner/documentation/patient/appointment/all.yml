@@ -1,0 +1,75 @@
+summary: Retrieve all appointments of an associated patient to an authenticated practitioner
+tags:
+  - Patients
+parameters:
+  - name: Authorization
+    in: header
+    required: true
+    description: Bearer token for user authentication
+    type: string
+    example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  - name: loginfo_id
+    in: path
+    required: true
+    description: patient's unique identifier
+responses:
+  200:
+    description: Successfully retrieved all appointments
+    schema:
+      type: object
+      properties:
+        appointments:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Unique identifier for the appointment
+                example: "66795d7b-45fd-4211-873b-03fc49e7761f"
+              date:
+                type: string
+                format: date
+                description: Date of the appointment
+                example: "2025-12-10"
+              time_from:
+                type: string
+                format: time
+                description: Start time of the appointment
+                example: "09:00"
+              time_to:
+                type: string
+                format: time
+                description: End time of the appointment
+                example: "09:30"
+              status:
+                type: string
+                description: Status of the appointment
+                example: "confirmed"
+  403:
+    description: Unauthorized access
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Unauthorized access"
+  404:
+    description: User or adult profile not found
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "User not found"
+  500:
+    description: Unexpected server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "An unexpected error occurred"
+        details:
+          type: string
+          example: "Exception details go here"

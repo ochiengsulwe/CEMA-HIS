@@ -1,0 +1,23 @@
+specializations = {
+    'General Surgeon': ('SURG', 'General Surgery'),
+    'Anesthesiologist': ('ANE', 'Anesthesiology'),
+    'Pediatrician': ('PED', 'Pediatrics'),
+    'Cardiologist': ('CARD', 'Cardiology'),
+    'Orthopedist': ('ORTH', 'Orthopedistry'),
+    'Ophthalmologist': ('OPH', 'Opthalmology'),
+    'Oncologist': ('ONC', 'Oncology'),
+    'Neurologist': ('NEU', 'Neurology'),
+    'Radiologist': ('RAD', 'Radiology'),
+    'Dermatologist': ('DERM', 'Dermatology'),
+    'Gynecologist': ('GYN', 'Gynecology'),
+    'General Practitioner': ('GP', 'General Practice'),
+    'Emergency Medicine Specialist': ('EMS', 'Emergency Medicine'),
+    'Endocrinologist': ('END', 'Endocrinology'),
+    'Hematologist': ('HEM', 'Hematology'),
+    'Nephrologist': ('NEPH', 'Nephrology'),
+    'Gastroenterologist': ('GAST', 'Gastroenterology'),
+    'Urologist': ('URO', 'Urology'),
+    'Rheumatologist': ('RHE', 'Rheumatology'),
+    'Allergist': ('ALL', 'Allergistry'),
+    'Immunologist': ('IMM', 'Immulogy')
+}

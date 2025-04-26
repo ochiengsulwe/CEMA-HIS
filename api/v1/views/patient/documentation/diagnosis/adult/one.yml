@@ -1,0 +1,82 @@
+tags:
+  - Adult Diagnosis
+summary: Retrieve a specific diagnosis by ID
+description: >
+  Retrieves the details of a specific diagnosis by its unique ID.
+  Only authenticated adult users can access this endpoint.
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: diagnosis_id
+    in: path
+    required: true
+    type: string
+    description: The unique ID of the diagnosis to retrieve
+    example: "123e4567-e89b-12d3-a456-426614174000"
+responses:
+  200:
+    description: Successful retrieval of diagnosis
+    schema:
+      type: object
+      properties:
+        diagnosis:
+          type: string
+          example: "Pneumonia"
+        severity:
+          type: string
+          example: "Severe"
+        prognosis:
+          type: string
+          example: "Full recovery expected with treatment"
+        diagnosed_by:
+          type: string
+          example: "Jane Wanjiku Doe"
+        schedule_id:
+          type: string
+          example: "223e4567-e89b-12d3-a456-426614174111"
+        appointment_id:
+          type: string
+          example: "323e4567-e89b-12d3-a456-426614174222"
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-04-26 14:30:00"
+  401:
+    description: Unauthorized access due to missing or invalid token
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not signed in"
+  403:
+    description: Forbidden - user is not an adult or not authorized to access this diagnosis
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+  404:
+    description: Diagnosis or user not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "diagnosis not found"
+  500:
+    description: Internal Server Error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "database error"
+        details:
+          type: string
+          example: "OperationalError"

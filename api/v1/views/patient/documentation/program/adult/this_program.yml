@@ -1,0 +1,75 @@
+tags:
+  - Adult Programs
+summary: Retrieve details of a specific enrolled program by ID
+description: >
+  Retrieves the details of a specific health program that the authenticated adult patient is enrolled in,
+  based on the program ID.
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: program_id
+    in: path
+    type: string
+    required: true
+    description: ID of the enrolled program to retrieve
+    example: "123e4567-e89b-12d3-a456-426614174000"
+responses:
+  200:
+    description: Successful retrieval of the enrolled program details
+    schema:
+      type: object
+      properties:
+        program_id:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        practitioner:
+          type: string
+          example: "Dr. Jane Doe"
+        start_date:
+          type: string
+          example: "2025-05-01"
+        end_date:
+          type: string
+          example: "2025-08-01"
+        description:
+          type: string
+          example: "A comprehensive health program for managing diabetes."
+  401:
+    description: Unauthorized access due to missing or invalid token
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not signed in"
+  403:
+    description: Forbidden - user not authorized to access this program
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+  404:
+    description: Program not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "program not found"
+  500:
+    description: Internal Server Error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "database error"
+        details:
+          type: string
+          example: "OperationalError"

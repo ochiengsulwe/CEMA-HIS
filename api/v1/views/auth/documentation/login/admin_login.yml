@@ -1,0 +1,26 @@
+summary: Logs in a user into an  Admin(System) Account.
+tags:
+  - Login
+parameters:
+  - name: body
+    description: System Admin log-in route. Only a password is to be supplied.
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - password
+      properties:
+        password:
+          type: string
+          format: password
+          example: "secret"
+responses:
+  200:
+    description: Successfully logged in.
+
+  400:
+    description: Failed to log in due invalid request body.
+
+  401:
+    description: Incorrect email or password.

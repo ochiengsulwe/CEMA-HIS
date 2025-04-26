@@ -1,0 +1,86 @@
+tags:
+  - Child Prescription
+summary: Retrieve all issued prescriptions for an adult patient
+description: >
+  Retrieves all prescriptions that have been issued (`status == issued`) for an
+  authenticated adult's child patient,
+  grouped by the prescription date.
+  Only authenticated adults can access this endpoint for their children.
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: child_id
+    in: path
+    required: true
+    type: string
+    description: The child's ID
+    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+responses:
+  200:
+    description: Successful retrieval of issued prescriptions
+    schema:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          type: object
+          properties:
+            prescription_id:
+              type: string
+              example: "123e4567-e89b-12d3-a456-426614174000"
+            status:
+              type: string
+              example: "issued"
+            category:
+              type: string
+              example: "medication"
+            sub_category:
+              type: string
+              example: "oral"
+            name:
+              type: string
+              example: "Amoxicillin 500mg"
+            note:
+              type: string
+              example: "Take one tablet three times a day after meals."
+            frequency:
+              type: string
+              example: "Every 8 hours"
+            prescribed_by:
+              type: string
+              example: "Dr. John Doe"
+            prescription_date:
+              type: string
+              format: date
+              example: "2025-04-25"
+  401:
+    description: Unauthorized access due to missing or invalid token
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not signed in"
+  404:
+    description: User not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "user not found"
+  500:
+    description: Internal Server Error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "database error"
+        details:
+          type: string
+          example: "OperationalError"

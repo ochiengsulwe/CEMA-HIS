@@ -1,0 +1,50 @@
+summary: Delete a specific prescription entry
+tags:
+  - Patient Prescriptions
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: prescription_entry_id
+    in: path
+    type: string
+    required: true
+    description: The unique identifier of the PrescriptionEntry to be deleted
+    example: "b07d9859-19b7-4653-bd96-79e193bb54a3"
+
+responses:
+  200:
+    description: Prescription entry deleted successfully
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Prescription entry deleted successfully"
+  403:
+    description: Access forbidden due to missing or invalid credentials
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Not authorized"
+  404:
+    description: User or prescription entry not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Prescription entry not found"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Unexpected error occurred"

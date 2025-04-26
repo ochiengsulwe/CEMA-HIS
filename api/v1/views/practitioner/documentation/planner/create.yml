@@ -1,0 +1,72 @@
+tags:
+  - Planner
+summary: Create a planner for a practitioner
+description: >
+  Creates a new Planner instance if the practitioner has None,
+  or creates a day's schedule(Slot) if practitioner has planner.
+  Allows a practitioner to create a planner by specifying a date and time slots
+  (time_from and time_to).
+  The service validates that the date exists and that the provided times do not
+  overlap or duplicate existing time slots for the same day.
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: body
+    in: body
+    required: true
+    description: JSON payload containing date and time details
+    schema:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+          description: The date for the planner in `YYYY-MM-DD` format
+          example: "2024-12-10"
+        time_from:
+          type: string
+          format: time
+          description: The start time in `HH:mm` format
+          example: "09:00"
+        time_to:
+          type: string
+          format: time
+          description: The end time in `HH:mm` format
+          example: "10:00"
+responses:
+  201:
+    description: Planner created successfully
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Planner slot created successfull."
+  400:
+    description: Bad request due to invalid input or overlapping time slots
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Time slot overlaps with existing slot 09:30 to 10:30."
+  401:
+    description: Unauthorized due to missing or invalid token
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Missing Authorization Header"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "An unexpected error occurred."

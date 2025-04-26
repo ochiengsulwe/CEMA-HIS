@@ -1,0 +1,51 @@
+summary: Updates specific fields in a practitioner account.
+tags:
+  - Update Profile
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authorization
+    example: "Bearer <JWT_TOKEN>"
+  - name: body
+    description: The body should contain practitioner's updatable information
+    in: body
+    required: false
+    schema:
+      type: object
+      required:
+        - phone_number
+        - current_location
+      properties:
+        phone_number:
+          type: string
+          example: "+254715610485"
+        location:
+          type: string
+          example: "Nairobi"
+responses:
+  201:
+    description: Updated successfully
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Field(s) succesfully updated"
+  400:
+    description: Invalid request body
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "invalid body request"
+  403:
+    description: Unauthorized access or permissions denied
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "unauthorised access!"

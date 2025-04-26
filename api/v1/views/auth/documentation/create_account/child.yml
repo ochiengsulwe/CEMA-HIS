@@ -1,0 +1,71 @@
+summary: Creates a new Child Account
+tags:
+  - Create Account
+description: creates a child account by providing the child's birth certificate number.
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: body
+    in: body
+    description: The body should contain the child account creation details
+    required: true
+    schema:
+      type: object
+      required:
+        - birth_cert_number
+      properties:
+        birth_cert_number:
+          type: integer
+          example: 101234
+responses:
+  201:
+    description: Successfully created a new child account.
+    schema:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "66795d7b-45fd-4211-873b-03fc49e7761f"
+        birth_cert_number:
+          type: integer
+          example: 101234
+        first_name:
+          type: string
+          example: "John"
+        last_name:
+          type: string
+          example: "Kamau"
+        gender:
+          type: string
+          example: "Male"
+        message:
+          type: string
+          example: "Account for (John) was created successfully"
+  400:
+    description: Invalid request body.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "not json"
+  409:
+    description: Conflict - The patient account for the ID exists.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Child account already exists"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Database integrity error"

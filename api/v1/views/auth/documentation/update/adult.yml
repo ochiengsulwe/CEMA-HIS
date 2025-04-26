@@ -1,0 +1,62 @@
+summary: Updates adult account proile information.
+tags:
+  - Update Profile
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authorization
+    example: "Bearer <JWT_TOKEN>"
+  - name: body
+    description: The body should contain the adult required information
+    in: body
+    required: false
+    schema:
+      type: object
+      required:
+        - middle_name
+        - gender
+        - date_of_birth
+        - current_location
+      properties:
+        middle_name:
+          type: string
+          example: "Odongo"
+        gender:
+          type: string
+          description: Allowed gender types are `Male` or `Female`
+          example: "Male"
+        date_of_birth:
+          type: string
+          format:  Date
+          description: Allowed format is `yyyy-mm-dd` as in example.
+          example: "2000-12-01"
+        current_location:
+          type: string
+          example: "Nairobi"
+responses:
+  201:
+    description: Registered successfully
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "verified"
+  400:
+    description: Invalid request body
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "invalid body request"
+  403:
+    description: Unauthorized access or permissions denied
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "unauthorised access!"

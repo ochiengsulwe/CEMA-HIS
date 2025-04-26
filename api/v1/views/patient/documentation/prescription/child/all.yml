@@ -1,0 +1,92 @@
+tags:
+  - Child Prescription
+summary: Retrieve all prescriptions for an authenticated adult user's child
+description: >
+  Retrieves all prescriptions for a specific child user, including details about the medication, 
+  prescription status, frequency, and the practitioner who prescribed it.
+  Only authenticated users with `adult` account type can access this endpoint
+  for their respective children.
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: child_id
+    in: path
+    required: true
+    type: string
+    description: The child's ID
+    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+responses:
+  200:
+    description: Successful retrieval of prescriptions
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          prescription_id:
+            type: string
+            example: "987e4567-e89b-12d3-a456-426614174000"
+          status:
+            type: string
+            example: "issued"
+          category:
+            type: string
+            example: "medication"
+          sub_category:
+            type: string
+            example: "oral"
+          name:
+            type: string
+            example: "Paracetamol"
+          note:
+            type: string
+            example: "Take 1 tablet every 8 hours for 5 days"
+          frequency:
+            type: string
+            example: "Every 8 hours"
+          prescribed_by:
+            type: string
+            example: "Dr. John Doe"
+          prescription_date:
+            type: string
+            format: date
+            example: "2025-04-25"
+  401:
+    description: Unauthorized access due to missing or invalid token
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not signed in"
+  403:
+    description: Forbidden - user is not authorized to access prescriptions
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+  404:
+    description: No prescriptions found for the authenticated user
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "no prescriptions found"
+  500:
+    description: Internal Server Error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "database error"
+        details:
+          type: string
+          example: "OperationalError"

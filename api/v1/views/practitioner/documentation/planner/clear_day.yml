@@ -1,0 +1,69 @@
+tags:
+  - Planner
+summary: Clears practitioner's entire day
+description: >
+  Allows a practitioner to delete an entire day availabity making it impossible for
+  them to be assigned appointments on this such day. If there is any already booked
+  appointment, then it will be rescheduled for the closest free time of the practitioner.
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: slot_id
+    in: path
+    required: true
+    type: string
+    description: The slot id to be updated
+    example: "hhjaudd"
+responses:
+  200:
+    description: Resource deleted successfully
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "your day is successfully cleared."
+  400:
+    description: Bad request due to invalid input
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "span Id required"
+  401:
+    description: Unauthorized due to missing or invalid token
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+  403:
+    description: Forbidden from accessing the resource
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "forbidden"
+  404:
+    description: Resource not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "slot not found"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "An unexpected error occurred."

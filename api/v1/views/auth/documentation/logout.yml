@@ -1,0 +1,28 @@
+summary: Logs out the current user
+tags:
+  - Logout
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+description: This endpoint logs out the currently authenticated user by ending their session.
+responses:
+  200:
+    description: Successfully logged out.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "logged out"
+  401:
+    description: Unauthorized - User is not authenticated.
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Not signed in"

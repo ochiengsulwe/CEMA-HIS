@@ -1,0 +1,28 @@
+{
+  "name": "cema-his-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky install",
+    "lint-staged": "lint-staged",
+    "lint": "flake8 . && yamllint . && shellcheck **/*.sh",
+    "test": "pytest tests/"
+  },
+  "lint-staged": {
+    "*.yaml": [
+      "yamllint"
+    ],
+    "*.sh": [
+      "shellcheck"
+    ],
+    "*.py": [
+      "flake8 ."
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.2.10"
+  }
+}

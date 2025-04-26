@@ -1,0 +1,54 @@
+summary: Create a new TestOrder from an active consultation schedule
+tags:
+  - Patients
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: schedule_id
+    in: path
+    type: string
+    required: true
+    description: Unique identifier of the appointment schedule
+    example: "63e1a55e-9db2-4b65-afe6-03e6cd885034"
+
+responses:
+  201:
+    description: TestOrder successfully created
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "TestOrder successfully created"
+  400:
+    description: Schedule is invalid or request cannot be processed
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Schedule entry not found"
+  401:
+    description: Unauthorized access (e.g., user not signed in)
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Authentication required"
+  403:
+    description: Forbidden — not the assigned practitioner
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "You are not authorized to create a TestOrder for this schedule"
+  500:
+    description: Unexpected internal server error
+    schema:
+      type: object

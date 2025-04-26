@@ -1,0 +1,64 @@
+summary: Retrieve all available diagnostic tests
+tags:
+  - Diagnostic Tests
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+responses:
+  200:
+    description: Successfully retrieved tests
+    schema:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          type: object
+          properties:
+            test_id:
+              type: string
+              example: "89d439ba-7b49-43cb-888b-409f42383ff0"
+            test_name:
+              type: string
+              example: "Complete Blood Count"
+            test_for:
+              type: string
+              example: "Helps diagnose infection, anemia, and other conditions"
+  401:
+    description: User not signed in
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Not signed in"
+  403:
+    description: Unauthorized access
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Not authorised"
+  404:
+    description: No diagnostic tests found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "No diagnostic tests found"
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Unexpected error"
+        details:
+          type: string
+          example: "Some database or runtime error details"

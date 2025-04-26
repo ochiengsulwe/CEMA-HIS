@@ -1,0 +1,24 @@
+summary: Retrieves all hospitals available by name
+tags: 
+  - Collectives
+description: Retrieve a list of all hospitals, optionally filtered by a query parameter.
+parameters:
+  - name: query
+    in: query
+    type: string
+    required: false
+    description: Optional query to filter hospitals by name
+responses:
+  200:
+    description: A list of hospitals
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: The hospital ID
+          name:
+            type: string
+            description: The hospital name

@@ -1,0 +1,53 @@
+summary: Issue a prescription
+tags:
+  - Patient Prescriptions
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: prescription_id
+    in: path
+    type: string
+    required: true
+    description: The unique identifier of the prescription to be issued
+    example: "cfa52fc7-7bd2-423e-84c3-bb4498f42a0f"
+
+responses:
+  200:
+    description: Prescription successfully issued
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "prescription issued successfuly"
+
+  403:
+    description: Access forbidden due to invalid or missing authentication
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+
+  404:
+    description: Practitioner or prescription not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "prescription not found"
+
+  500:
+    description: Internal server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "unexpected error"
