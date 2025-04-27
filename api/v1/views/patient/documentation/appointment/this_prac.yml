@@ -1,0 +1,75 @@
+tags:
+  - Program Practitioner
+summary: Retrieve details of a specific practitioner by ID
+description: >
+  Retrieves the details of a specific practitioner based on their ID. The response includes the practitioner's name,
+  cost (fee), profession, and specialization (only if available). If the specialization is None, it will not be included.
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: practitioner_id
+    in: path
+    type: string
+    required: true
+    description: ID of the practitioner to retrieve
+    example: "12345"
+responses:
+  200:
+    description: Successful retrieval of the practitioner's details
+    schema:
+      type: object
+      properties:
+        practitioner_id:
+          type: string
+          example: "12345"
+        name:
+          type: string
+          example: "Dr. John Doe"
+        cost:
+          type: integer
+          example: 500
+        profession:
+          type: string
+          example: "Doctor"
+        specialization:
+          type: string
+          example: "Cardiology"  # This field will not appear if specialization is None
+  401:
+    description: Unauthorized access due to missing or invalid token
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not signed in"
+  403:
+    description: Forbidden - user not authorized to access this practitioner
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+  404:
+    description: Practitioner not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "practitioner not found"
+  500:
+    description: Internal Server Error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "database error"
+        details:
+          type: string
+          example: "OperationalError"

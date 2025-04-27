@@ -6,6 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from api.v1 import db
 from models import storage
 from models.appointment import Appointment
+from models.h_prog import HealthProgram
 from models.loginfo import LogInfo
 from models.practitioner_profile import PracProfile
 from models.prac_program import PractitionerProgram
@@ -17,12 +18,14 @@ from utils.general import data_check
 from utils.overlap import schedule_overlap, span_find
 
 
-def adult_book_appointment(data):
+def adult_book_appointment(program_id, prac_id, data):
     """
     Books an appointment with a practitioner for an adult user.
 
     Args:
         data (dict): a dictionary containing appointment information
+        program_id (str): the program the patient whants to enroll into
+        prac_id (str): the practioner offering the program.
 
     Returns:
         tuple: A response message and an associated HTTP code
@@ -31,7 +34,7 @@ def adult_book_appointment(data):
     if not current_user_id:
         return jsonify({'error': 'not authorised'}), 403
 
-    required_fields = ['practitioner_id', 'program_id', 'date', 'time_from', 'time_to']
+    required_fields = ['date', 'time_from', 'time_to']
     if not data:
         return jsonify({'error': 'not json'}), 400
 
@@ -42,8 +45,6 @@ def adult_book_appointment(data):
     date = datetime.strptime(data['date'], '%Y-%m-%d').date()
     time_from = datetime.strptime(data['time_from'], '%H:%M').time()
     time_to = datetime.strptime(data['time_to'], '%H:%M').time()
-    practitioner_id = data.get('practitioner_id')
-    program_id = data.get('program_id')
     status = 'confirmed'
     s_status = 'pending'
     appointment_type = 'once'
@@ -52,16 +53,20 @@ def adult_book_appointment(data):
     if not patient_info:
         return jsonify({'message': 'patient information not found'}), 404
 
-    prac_profile = storage.get(PracProfile, practitioner_id)
+    prac_profile = storage.get(PracProfile, prac_id)
     if not prac_profile:
         return jsonify({'message': 'practitioner not found'}), 404
 
-    prac_program = storage.find_by_two_fields(PractitionerProgram,
-                                              'prac_id', practitioner_id,
-                                              'program_id', program_id)
-    if not prac_program:
-        return jsonify({'error': 'practitioner is not linked to this program'}), 403
+    program = storage.get(HealthProgram, program_id)
+    if not program:
+        return jsonify({'error': 'appointment not found'}), 404
 
+    prac_program = db.session.query(PractitionerProgram).filter_by(
+        prac_id=prac_id, program_id=program_id).first()
+    if not prac_program:
+        return jsonify({'error': 'practitioner is not linked to this program'}), 404
+
+    # check if the practitioner is free at this selected time
     free = span_find(prac_profile, date, time_from, time_to)
     if not free:
         mes = f"{prac_profile.identity.last_name} is booked at this time!"
@@ -70,9 +75,10 @@ def adult_book_appointment(data):
     try:
         user = patient_info.adult_profile
         if not user:
-            return jsonify({'error': 'User profile not found'}), 404
+            return jsonify({'error': 'user profile not found'}), 404
 
         if user.appointments:
+            # avoids booking an appointment where the patient has one at same time
             overlapping_appointment = schedule_overlap(user, date, time_from, time_to)
             if overlapping_appointment:
                 return jsonify({
@@ -83,7 +89,7 @@ def adult_book_appointment(data):
             # Prevent multiple bookings for the same program with same practitioner
             for ap in user.appointments:
                 if (
-                    ap.practitioner_id == practitioner_id and
+                    ap.practitioner_id == prac_id and
                         ap.program_id == program_id
                 ):
                     mes = (f"You already have an appointment with "
@@ -113,6 +119,7 @@ def adult_book_appointment(data):
         if user not in prac_program.enrolled_adults:
             prac_program.enrolled_adults.append(user)
 
+        # removes this appointment time from practitioner's availability
         adjust_planner(free, time_from, time_to)
         storage.save()
 

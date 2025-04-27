@@ -148,24 +148,21 @@ class DBStorage:
                             should be avoided, especially when the database have
                             several entries.
             Returns:
-                dict: Key/Value represntation of the Model instance attribute
-                            values.
+                list: returns a list of class objects
 
         """
         if _cls and _cls not in classes.values():
             raise ValueError(f"Invalid model class: {_cls}")
 
-        new_dict = {}
+        instances = []
         for class_name, class_type in classes.items():
             if _cls is None or _cls == class_type or _cls == class_name:
                 try:
                     objs = db.session.query(class_type).all()
-                    for obj in objs:
-                        key = f"{obj.__class__.__name__}.{obj.id}"
-                        new_dict[key] = obj
+                    instances.extend(objs)
                 except Exception as e:
                     raise RuntimeError(f"Failed to query objects for {class_name}: {e}")
-        return (new_dict)
+        return (instances)
 
     def new(self, obj):
         """Adds the object to the current database session.

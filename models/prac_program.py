@@ -19,7 +19,7 @@ class PractitionerProgram(BaseModel, db.Model):
     program = db.relationship('HealthProgram', back_populates='prac_programs',
                               uselist=False)
     practitioner = db.relationship('PracProfile', back_populates='programs',
-                                   uselist='False')
+                                   uselist=False)
     enrolled_adults = db.relationship(
         'AdultProfile',
         secondary='adult_program_enrollments',

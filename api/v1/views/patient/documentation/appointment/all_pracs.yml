@@ -1,0 +1,72 @@
+tags:
+  - Program Practitioner
+summary: Retrieve practitioners linked to a specific program
+description: >
+  Retrieves all practitioners associated with a specific health program.
+  Only accessible to authenticated adult users.
+  Practitioners are grouped by name and include consultation cost, profession, and specialization (if available).
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Bearer token for authentication
+    example: "Bearer <JWT_TOKEN>"
+  - name: program_id
+    in: path
+    type: string
+    required: true
+    description: ID of the program whose practitioners are to be retrieved
+    example: "123e4567-e89b-12d3-a456-426614174000"
+responses:
+  200:
+    description: Successful retrieval of practitioners linked to the program
+    schema:
+      type: object
+      additionalProperties:
+        type: object
+        properties:
+          cost:
+            type: integer
+            example: 2000
+          profession:
+            type: string
+            example: "General Practitioner"
+          specialization:
+            type: string
+            example: "Cardiology"
+  401:
+    description: Unauthorized access due to missing or invalid token
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not signed in"
+  403:
+    description: Forbidden - user not authorized to access this program
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "not authorised"
+  404:
+    description: Program not found or user not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "program not found"
+  500:
+    description: Internal Server Error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "database error"
+        details:
+          type: string
+          example: "OperationalError"

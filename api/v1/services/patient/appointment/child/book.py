@@ -7,6 +7,7 @@ from api.v1 import db
 from models import storage
 from models.appointment import Appointment
 from models.child_profile import ChildProfile
+from models.h_prog import HealthProgram
 from models.loginfo import LogInfo
 from models.practitioner_profile import PracProfile
 from models.prac_program import PractitionerProgram
@@ -19,13 +20,15 @@ from utils.overlap import schedule_overlap, span_find
 from utils.support import is_parent
 
 
-def child_book_appointment(data, child_id):
+def child_book_appointment(data, child_id, prac_id, program_id):
     """
     Books an appointment with a practitioner for a child user
 
     Args:
         data (dict): a dictionary containing appointment information
         child_id (str): child's profile unique ID
+        prac_id (str): the practitioner offering the program
+        program_id (str): the program the adult wants to sign up the child
 
     Returns:
         tuple: A response message and an associated HTTP code
@@ -34,7 +37,7 @@ def child_book_appointment(data, child_id):
     if not current_user_id:
         return jsonify({'error': 'not authorised'}), 403
 
-    required_fields = ['practitioner_id', 'program_id', 'date', 'time_from', 'time_to']
+    required_fields = ['date', 'time_from', 'time_to']
     if not data:
         return jsonify({'error': 'not json'}), 400
 
@@ -45,33 +48,33 @@ def child_book_appointment(data, child_id):
     date = datetime.strptime(data['date'], '%Y-%m-%d').date()
     time_from = datetime.strptime(data['time_from'], '%H:%M').time()
     time_to = datetime.strptime(data['time_to'], '%H:%M').time()
-    practitioner_id = data.get('practitioner_id')
-    program_id = data.get('program_id')
     status = 'confirmed'
     s_status = 'pending'
     appointment_type = 'once'
 
-    patient_info = storage.get(LogInfo, current_user_id)
-    if not patient_info:
+    parent_info = storage.get(LogInfo, current_user_id)
+    if not parent_info:
         return jsonify({'error': 'patient information not found'}), 404
 
     child = storage.get(ChildProfile, child_id)
     if not child:
         return jsonify({'error': 'child information not found'}), 404
 
-    if not is_parent(child, patient_info):
+    if not is_parent(child, parent_info):
         return jsonify({'error': 'not authorised'}), 403
 
-    prac_profile = storage.get(PracProfile, practitioner_id)
+    prac_profile = storage.get(PracProfile, prac_id)
     if not prac_profile:
         return jsonify({'error': 'practitioner not found'}), 404
 
-    # Check if practitioner is linked to the program
-    prac_program = storage.find_by_two_fields(PractitionerProgram,
-                                              'prac_id', practitioner_id,
-                                              'program_id', program_id)
+    program = storage.get(HealthProgram, program_id)
+    if not program:
+        return jsonify({'error': 'appointment not found'}), 404
+
+    prac_program = db.session.query(PractitionerProgram).filter_by(
+        practitioner=prac_profile, program=program).first()
     if not prac_program:
-        return jsonify({'error': 'practitioner is not linked to this program'}), 403
+        return jsonify({'error': 'practitioner is not linked to this program'}), 404
 
     free = span_find(prac_profile, date, time_from, time_to)
     if not free:
@@ -83,17 +86,16 @@ def child_book_appointment(data, child_id):
             overlapping_appointment = schedule_overlap(child, date, time_from, time_to)
             if overlapping_appointment:
                 return jsonify({
-                    'error': 'already have another appointment at this time. '
+                    'error': 'child already has another appointment at this time. '
                              'Please choose another time.'
                 }), 409
 
-            # Prevent booking again with same practitioner for same program
             for app in child.appointments:
                 if (
-                    app.practitioner_id == practitioner_id and
+                    app.practitioner_id == prac_id and
                         app.program_id == program_id
                 ):
-                    mes = (f"You already have an appointment with "
+                    mes = (f"child already have an appointment with "
                            f"{prac_profile.identity.first_name} "
                            f"{prac_profile.identity.last_name} for this program.")
                     return jsonify({'error': mes}), 409

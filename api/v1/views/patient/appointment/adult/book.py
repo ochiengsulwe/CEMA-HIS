@@ -7,9 +7,9 @@ from api.v1.services.patient.appointment.adult.book import adult_book_appointmen
 from api.v1.views.patient import patient
 
 
-@patient.route('/appointment/book', methods=['POST'])
+@patient.route('/<program_id>/<prac_id>/appointment/book', methods=['POST'])
 @swag_from('/api/v1/views/patient/documentation/appointment/adult/book.yml')
 @jwt_required()
-def book_adult_appointment():
+def book_adult_appointment(program_id, prac_id):
     data = request.get_json()
-    return adult_book_appointment(data)
+    return adult_book_appointment(program_id, prac_id, data)

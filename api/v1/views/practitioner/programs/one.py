@@ -11,4 +11,4 @@ from api.v1.views.practitioner import practitioner
 @swag_from('/api/v1/views/practitioner/documentation/programs/one.yml')
 @jwt_required()
 def this_program(program_id):
-    return get_program_by_id()
+    return get_program_by_id(program_id)

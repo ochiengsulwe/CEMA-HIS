@@ -29,12 +29,11 @@ def get_program_by_id(program_id):
 
         user = storage.get(LogInfo, current_user_id)
         if not user:
-            return jsonify({'message': 'user not found'}), 404
+            return jsonify({'error': 'user not found'}), 404
 
-        """
-        if user.account_type != 'practitioner':
+        if user.account_type != 'adult':
             return jsonify({'error': 'not authorised'}), 403
-        """
+
         program = storage.get(HealthProgram, program_id)
         if not program:
             return jsonify({'error': 'health program not found'}), 404

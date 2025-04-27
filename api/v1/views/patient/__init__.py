@@ -23,6 +23,8 @@ from api.v1.views.patient.appointment.child.reschedule import (
     reschedule_child_appointment)
 from api.v1.views.patient.appointment.child.schedule import one_child_schedule
 from api.v1.views.patient.appointment.child.upcoming import upcoming_c_appointment
+from api.v1.views.patient.appointment.practitioners import all_pracs_in_program
+from api.v1.views.patient.appointment.this_prac import program_practitioner
 from api.v1.views.patient.diagnosis.adult.all import all_adult_diagnoses
 from api.v1.views.patient.diagnosis.adult.one import this_adult_diagnosis
 from api.v1.views.patient.diagnosis.child.all import all_child_diagnoses
@@ -52,4 +54,4 @@ from api.v1.views.patient.program.adult.this_pog import this_adult_program
 from api.v1.views.patient.program.child.my_progs import all_child_programs
 from api.v1.views.patient.program.child.this_pog import this_child_program
 from api.v1.views.patient.program.all import retrieve_for_patient_programs
-from api.v1.views.patient.program.one import this_program_for_patient
+from api.v1.views.patient.program.one import program_for_patient
