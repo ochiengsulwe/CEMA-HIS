@@ -1,14 +1,21 @@
-import click
+import json
 import requests
 import os
 
-API_URL = os.getenv('CEMA_HIS_API_CLI_URL', 'http://localhost:5000/#/')
-TOKEN_FILE = '.mordi_token'
+TOKEN_FILE = '.cema_token'
+SESSION_FILE = '.session_data'
+
+API_URL = 'http://localhost:5000'
 
 
 def save_token(token):
     with open(TOKEN_FILE, 'w') as f:
         f.write(token)
+
+
+def clear_token():
+    with open(TOKEN_FILE, 'w') as f:
+        f.write('')
 
 
 def get_token():
@@ -18,78 +25,207 @@ def get_token():
     return None
 
 
+def save_session_data(data):
+    with open(SESSION_FILE, 'w') as f:
+        json.dump(data, f)
+
+
+def get_session_data():
+    if os.path.exists(SESSION_FILE):
+        with open(SESSION_FILE, 'r') as f:
+            return json.load(f)
+    return {}
+
+
 def auth_headers():
     token = get_token()
     return {'Authorization': f'Bearer {token}'} if token else {}
 
 
-@click.group()
-def cli():
-    """Dokta Mordi CLI: Manage your healthcare platform via terminal"""
-    pass
+def logout():
+    token = get_token()
+
+    if not token:
+        print("No access token found. You are already logged out.")
+        return
+
+    headers = {
+        'Authorization': f'Bearer {token}'
+    }
+
+    response = requests.get(f'{API_URL}/auth/logout', headers=headers)
+
+    if response.ok:
+        print('Logout successful.')
+        clear_token()
+    else:
+        print(f'Logout failed: {response.text}')
 
 
-@cli.command()
-@click.argument('email')
-@click.argument('password')
-def login(email, password):
-    """Login as a user (stores JWT token locally)"""
-    response = requests.post(f'{API_URL}/auth/login', json={
+def create_account():
+    account_type = input(
+        "Create a "
+        ":\n1. Adult Acccount\n2. "
+        "Practitioner Account\n3. Child Account\nEnter choice (1/2/3): ")
+    if account_type == '1':
+        create_adult_account()
+    if account_type == '2':
+        create_practitioner_account()
+    if account_type == '3':
+        create_child_account()
+
+
+def login():
+    """
+    Prompt user to choose login type first,
+    then login or redirect to account creation if login fails.
+    """
+    user_type = input("Login as:\n1. Adult\n2. Practitioner\nEnter choice (1/2): ")
+
+    if user_type == '1':
+        login_route = '/auth/login/adult'
+    elif user_type == '2':
+        login_route = '/auth/login/practitioner'
+    else:
+        print("Invalid choice. Please select 1 for adult or 2 for practitioner.")
+        return
+
+    email = input("Enter your email: ")
+    password = input("Enter your password: ")
+
+    response = requests.post(f'{API_URL}{login_route}', json={
         'email': email,
         'password': password
     })
+
     if response.ok:
-        token = response.json().get('access_token')
+        data = response.json()
+        token = data.get('access_token')
         save_token(token)
-        click.echo('Login successful')
+
+        session_data = {
+            'program_id': None,
+            'practitioner_id': None,
+        }
+        save_session_data(session_data)
+
+        print('Login successful')
     else:
-        click.echo(f'Login failed: {response.text}')
+        print(f'Login failed: {response.text}')
+        create = input(
+            "Would you like to create an account? (yes/no): "
+        ).strip().lower()
+        if create == 'yes':
+            if user_type == '1':
+                create_adult_account()
+            elif user_type == '2':
+                create_practitioner_account()
+        else:
+            print("Okay. You can try logging in again later.")
+            return
 
 
-@cli.command()
-@click.argument('email')
-@click.argument('password')
-@click.argument('first_name')
-@click.argument('last_name')
-def register(email, password, first_name, last_name):
-    """Register a new user"""
-    response = requests.post(f'{API_URL}/auth/register', json={
+def create_child_account():
+    print("\n--- Creating Child Account ---")
+    birth_cert_number = input("Enter Child's Birth Certificate Number: ")
+
+    token = get_token()
+
+    if not token:
+        print("No access token found. Please log in first.")
+        return
+
+    headers = {
+        'Authorization': f'Bearer {token}'
+    }
+
+    payload = {
+        'birth_cert_number': birth_cert_number
+    }
+
+    response = requests.post(f'{API_URL}/auth/create_account/child', json=payload,
+                             headers=headers)
+
+    if response.ok:
+        print('Child Account created succesfully')
+    else:
+        print(f'failed to create child account: {response.text}')
+
+
+def create_adult_account():
+    """Create an adult account."""
+    print("\n--- Creating Adult Account ---")
+    email = input("Enter your email: ")
+    password = input("Enter your password: ")
+    phone_number = input("Enter your phone number: ")
+    id_number = input("Enter your ID number: ")
+
+    payload = {
         'email': email,
         'password': password,
-        'first_name': first_name,
-        'last_name': last_name
-    })
-    if response.ok:
-        click.echo('Registration successful')
-    else:
-        click.echo(f'Registration failed: {response.text}')
-
-
-@cli.command()
-@click.argument('prac_id')
-@click.argument('program_id')
-@click.argument('date')
-@click.argument('time_from')
-@click.argument('time_to')
-def book_adult(prac_id, program_id, date, time_from, time_to):
-    """Book an adult appointment"""
-    payload = {
-        'practitioner_id': prac_id,
-        'program_id': program_id,
-        'date': date,
-        'time_from': time_from,
-        'time_to': time_to
+        'phone_number': phone_number,
+        'id_number': id_number
     }
-    response = requests.post(f'{API_URL}/appointments/adult/book',
-                             headers=auth_headers(),
-                             json=payload)
+
+    response = requests.post(f'{API_URL}/auth/create_account/adult', json=payload)
+
     if response.ok:
-        click.echo('Appointment booked')
+        print("Adult account created successfully. You can now login!")
     else:
-        click.echo(f'Booking failed: {response.text}')
-
-# Add more commands for planner creation, child booking, etc.
+        print(f"Failed to create adult account: {response.text}")
 
 
-if __name__ == '__main__':
-    cli()
+def create_practitioner_account():
+    """Create a practitioner account."""
+    print("\n--- Creating Practitioner Account ---")
+    email = input("Enter your email: ")
+    password = input("Enter your password: ")
+    phone_number = input("Enter your phone number: ")
+    fee = input("Enter your consultation fee: ")
+    profession_reg = input("Enter your professional registration number: ")
+    profession_type = input("Enter your profession type: ")
+
+    payload = {
+        'email': email,
+        'password': password,
+        'phone_number': phone_number,
+        'fee': fee,
+        'profession_reg': profession_reg,
+        'profession_type': profession_type,
+    }
+
+    response = requests.post(
+        f'{API_URL}/auth/create_account/practitioner', json=payload)
+
+    if response.ok:
+        print("Practitioner account created successfully. You can now login!")
+    else:
+        print(f"Failed to create practitioner account: {response.text}")
+
+
+def main():
+    print("Welcome to CEMA-HIS CLI")
+    while True:
+        print("\nSelect an option:")
+        print("1. Login")
+        print("2. Create Account")
+        print("3. Logout")
+        print("4. Quit")
+
+        choice = input("Enter choice: ")
+
+        if choice == '1':
+            login()
+        elif choice == '2':
+            create_account()
+        elif choice == '3':
+            logout()
+        elif choice == '4':
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid option.")
+
+
+if __name__ == "__main__":
+    main()
