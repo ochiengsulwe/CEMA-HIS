@@ -1,6 +1,6 @@
 summary: Update frequency details for a prescription entry
 tags:
-  - Patient Prescriptions
+  - Practitioner-Patient Prescriptions
 parameters:
   - name: Authorization
     in: header

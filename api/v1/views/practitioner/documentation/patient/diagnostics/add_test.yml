@@ -1,6 +1,6 @@
 summary: Add one or more diagnostic tests to an existing test order
 tags:
-  - Patients
+  - Practitioner-Patient Diagnostics
 parameters:
   - name: Authorization
     in: header

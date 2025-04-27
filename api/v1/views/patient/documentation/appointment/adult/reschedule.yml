@@ -1,6 +1,6 @@
 summary: Reschedule an existing appointment of an adult user with a practitioner
 tags:
-  - Appointments
+  - Adult Appointments
 parameters:
   - name: Authorization
     in: header

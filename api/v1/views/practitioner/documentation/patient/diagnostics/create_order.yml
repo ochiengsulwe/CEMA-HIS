@@ -1,6 +1,6 @@
 summary: Create a new TestOrder from an active consultation schedule
 tags:
-  - Patients
+  - Practitioner-Patient Diagnostics
 parameters:
   - name: Authorization
     in: header

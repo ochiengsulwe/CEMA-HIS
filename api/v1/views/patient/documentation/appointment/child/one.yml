@@ -1,6 +1,6 @@
 summary: Retrieve a single appointment details for a child
 tags:
-  - Appointments
+  - Child Appointments
 parameters:
   - name: Authorization
     in: header

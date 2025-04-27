@@ -1,6 +1,6 @@
 summary: Issue a prescription
 tags:
-  - Patient Prescriptions
+  - Practitioner-Patient Prescriptions
 parameters:
   - name: Authorization
     in: header

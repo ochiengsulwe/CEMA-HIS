@@ -1,6 +1,6 @@
 summary: Retrieve a single prescription entry with full frequency details
 tags:
-  - Patient Prescriptions
+  - Practitioner-Patient Prescriptions
 parameters:
   - name: Authorization
     in: header

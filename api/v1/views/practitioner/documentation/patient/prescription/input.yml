@@ -1,6 +1,6 @@
 summary: Add one or more prescription entries to a patient's prescription record
 tags:
-  - Patient Prescriptions
+  - Practitioner-Patient Prescriptions
 parameters:
   - name: Authorization
     in: header

@@ -1,6 +1,6 @@
 summary: Adds a schedule to appointment entry
 tags:
-  - Appointments
+  - Practitioner Appointments
 parameters:
   - name: Authorization
     in: header

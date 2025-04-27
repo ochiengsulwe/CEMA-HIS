@@ -1,6 +1,6 @@
 summary: Retrieve a single related patient appointment details for an authenticated practitioner
 tags:
-  - Patients
+  - Practitioner-Patient Appointments
 parameters:
   - name: Authorization
     in: header

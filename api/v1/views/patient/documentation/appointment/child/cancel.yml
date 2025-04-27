@@ -1,6 +1,6 @@
 summary: Cancel an existing appointment for a child with a practitioner
 tags:
-  - Appointments
+  - Child Appointments
 parameters:
   - name: Authorization
     in: header

@@ -1,6 +1,6 @@
 summary: Retrieve all patienyts for an authenticated practitioner
 tags:
-  - Patients
+  - Practitioner-Patient
 parameters:
   - name: Authorization
     in: header

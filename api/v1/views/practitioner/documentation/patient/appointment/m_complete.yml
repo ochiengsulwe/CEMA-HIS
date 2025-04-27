@@ -1,6 +1,6 @@
 summary: Marks an appointment/appointment schedule as complete
 tags:
-  - Patients
+  - Practitioner-Patient Appointments
 parameters:
   - name: Authorization
     in: header

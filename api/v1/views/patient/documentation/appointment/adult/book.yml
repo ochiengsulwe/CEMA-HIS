@@ -1,6 +1,6 @@
 summary: Books an appointment for a patient with practitioner
 tags:
-  - Appointments
+  - Adult Appointments
 parameters:
   - name: Authorization
     in: header
@@ -8,6 +8,18 @@ parameters:
     required: true
     description: Bearer token for authentication
     example: "Bearer <JWT_TOKEN>"
+  - name: prac_id
+    in: path
+    type: string
+    required: true
+    description: practitioner's ID
+    example: "ID122"
+  - name: program_id
+    in: path
+    type: string
+    required: true
+    description: program's ID
+    example: "ID122"
   - name: Body
     description: The body should contain the appointment booking information.
     in: body

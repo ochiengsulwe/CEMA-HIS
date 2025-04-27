@@ -1,6 +1,6 @@
 summary: Retrieve all entries under a specific prescription, grouped by category and sub_category
 tags:
-  - Patient Prescriptions
+  - Practitioner-Patient Prescriptions
 parameters:
   - name: Authorization
     in: header

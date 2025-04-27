@@ -1,6 +1,6 @@
 summary: Retrieve a single appointment schedule details for an authenticated adult user
 tags:
-  - Appointments
+  - Adult Appointments
 parameters:
   - name: Authorization
     in: header

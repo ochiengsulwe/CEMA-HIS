@@ -1,6 +1,6 @@
 summary: Retrieve all available diagnostic tests
 tags:
-  - Diagnostic Tests
+  - Practitioner-Patient Diagnostics
 parameters:
   - name: Authorization
     in: header

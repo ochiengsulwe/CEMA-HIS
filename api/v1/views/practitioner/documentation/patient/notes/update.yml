@@ -1,6 +1,6 @@
 summary: Updates practitoner's note
 tags:
-  - Patients
+  - Practitioner-Patient Notes
 parameters:
   - name: Authorization
     in: header

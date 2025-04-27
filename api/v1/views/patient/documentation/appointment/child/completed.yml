@@ -1,6 +1,6 @@
 summary: Retrieve all completed appointments for a child
 tags:
-  - Appointments
+  - Child Appointments
 parameters:
   - name: Authorization
     in: header

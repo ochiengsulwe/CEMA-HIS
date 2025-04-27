@@ -1,6 +1,6 @@
 summary: Retrieves patient's diagnosis information
 tags:
-  - Patients
+  - Practitioner-Patient Diagnoses
 parameters:
   - name: Authorization
     in: header

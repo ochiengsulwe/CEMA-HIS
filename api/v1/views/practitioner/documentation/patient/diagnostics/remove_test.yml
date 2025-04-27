@@ -1,6 +1,6 @@
 summary: Remove a diagnostic test from a Test Order
 tags:
-  - Diagnostic Tests
+  - Practitioner-Patient Diagnostics
 parameters:
   - name: Authorization
     in: header

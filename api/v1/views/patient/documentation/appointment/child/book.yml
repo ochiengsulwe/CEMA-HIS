@@ -1,6 +1,6 @@
 summary: Books an appointment for a child via a parent's account
 tags:
-  - Appointments
+  - Child Appointments
 parameters:
   - name: Authorization
     in: header
@@ -13,6 +13,18 @@ parameters:
     type: string
     required: true
     description: child's ID
+    example: "ID122"
+  - name: prac_id
+    in: path
+    type: string
+    required: true
+    description: practitioner's ID
+    example: "ID122"
+  - name: program_id
+    in: path
+    type: string
+    required: true
+    description: program's ID
     example: "ID122"
   - name: Body
     description: The body should contain the appointment booking information.

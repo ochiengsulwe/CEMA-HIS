@@ -1,6 +1,6 @@
 summary: Creates a new patient's diagnosis
 tags:
-  - Patients
+  - Practitioner-Patient Diagnoses
 parameters:
   - name: Authorization
     in: header

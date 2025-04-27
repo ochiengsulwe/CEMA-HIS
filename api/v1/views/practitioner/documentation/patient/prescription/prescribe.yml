@@ -1,6 +1,6 @@
 summary: Create a prescription attached to a schedule
 tags:
-  - Patient Prescriptions
+  - Practitioner-Patient Prescriptions
 parameters:
   - name: Authorization
     in: header

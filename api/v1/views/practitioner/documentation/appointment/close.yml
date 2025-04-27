@@ -1,6 +1,6 @@
 summary: Close an appointment if symptoms don't match prac's experience
 tags:
-  - Appointments
+  - Practitioner Appointments
 parameters:
   - name: Authorization
     in: header

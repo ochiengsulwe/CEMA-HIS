@@ -1,6 +1,6 @@
 summary: Retrieve all appointments for an authenticated Adult patient
 tags:
-  - Appointments
+  - Adult Appointments
 parameters:
   - name: Authorization
     in: header

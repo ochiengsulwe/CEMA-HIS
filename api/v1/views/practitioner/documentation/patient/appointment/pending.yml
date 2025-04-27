@@ -1,6 +1,6 @@
 summary: Retrieve all upcoming appointments of an associated patient to an authenticated practitioner
 tags:
-  - Patients
+  - Practitioner-Patient Appointments
 parameters:
   - name: Authorization
     in: header

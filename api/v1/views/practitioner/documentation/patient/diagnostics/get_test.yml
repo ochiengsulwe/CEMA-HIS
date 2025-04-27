@@ -1,6 +1,6 @@
 summary: Retrieve a specific diagnostic test by ID
 tags:
-  - Diagnostic Tests
+  - Practitioner-Patient Diagnostics
 parameters:
   - name: Authorization
     in: header

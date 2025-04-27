@@ -1,6 +1,6 @@
 summary: Marks an appointment as repeat making it recurrent ( > 1 schedule entries )
 tags:
-  - Patients
+  - Practitioner-Patient Appointments
 parameters:
   - name: Authorization
     in: header

@@ -1,6 +1,6 @@
 summary: Cancel an existing appointment with a patient
 tags:
-  - Appointments
+  - Practitioner Appointments
 parameters:
   - name: Authorization
     in: header
