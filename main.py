@@ -66,13 +66,13 @@ def create_account():
     account_type = input(
         "Create a "
         ":\n1. Adult Acccount\n2. "
-        "Practitioner Account\n3. Child Account\nEnter choice (1/2/3): ")
+        "Practitioner Account\nEnter choice (1/2): ")
     if account_type == '1':
         create_adult_account()
     if account_type == '2':
         create_practitioner_account()
-    if account_type == '3':
-        create_child_account()
+    else:
+        return
 
 
 def login():
@@ -104,6 +104,7 @@ def login():
         save_token(token)
 
         session_data = {
+            'user_type': 'adult' or 'practitioner',
             'program_id': None,
             'practitioner_id': None,
         }
@@ -203,24 +204,71 @@ def create_practitioner_account():
         print(f"Failed to create practitioner account: {response.text}")
 
 
+def adult_menu():
+    while True:
+        print("\n--- Adult Menu ---")
+        print("1. Book Appointment")
+        print("2. View My Appointments")
+        print("3. Create Child Account")
+        print("4. Logout")
+
+        choice = input("Enter choice: ")
+
+        if choice == '1':
+            pass
+        elif choice == '2':
+            pass
+        elif choice == '3':
+            create_child_account()
+        elif choice == '4':
+            logout()
+            break
+        else:
+            print("Invalid option.")
+
+
+def practitioner_menu():
+    while True:
+        print("\n--- Practitioner Menu ---")
+        print("1. View My Schedule")
+        print("2. Manage Appointments")
+        print("3. Logout")
+
+        choice = input("Enter choice: ")
+
+        if choice == '1':
+            pass
+        elif choice == '2':
+            pass
+        elif choice == '3':
+            logout()
+            break
+        else:
+            print("Invalid option.")
+
+
 def main():
     print("Welcome to CEMA-HIS CLI")
     while True:
         print("\nSelect an option:")
         print("1. Login")
         print("2. Create Account")
-        print("3. Logout")
-        print("4. Quit")
+        print("3. Quit")
 
         choice = input("Enter choice: ")
 
         if choice == '1':
             login()
+            session_data = get_session_data()  # <-- Load session
+            if session_data:
+                user_type = session_data.get('user_type')
+                if user_type == 'adult':
+                    adult_menu()
+                elif user_type == 'practitioner':
+                    practitioner_menu()
         elif choice == '2':
             create_account()
         elif choice == '3':
-            logout()
-        elif choice == '4':
             print("Goodbye!")
             break
         else:
