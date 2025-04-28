@@ -38,6 +38,7 @@ Startup data is stored in the following directories:
 Account Creation, Access This Link](./utils/proxy/data/practitioners)
 
 These datasets are necessary to register and authenticate users into the system successfully.
+The above datasets represent various third-party databases we are querying to establish the authenticity of data a user is supplying into the system.
 ## Running The Program
 To start the system, follow these steps:
 
