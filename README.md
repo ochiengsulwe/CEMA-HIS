@@ -29,6 +29,8 @@ Startup data is stored in the following directories:
 These datasets are necessary to successfully register and authenticate users into the system.
 ## Running The Program
 To start the system, follow these steps:
+#### Make sure to be in a virtual environmnent first
+
 
 1. Start the API server
 
