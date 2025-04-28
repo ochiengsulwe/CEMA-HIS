@@ -31,12 +31,15 @@ These datasets are necessary to successfully register and authenticate users int
 To start the system, follow these steps:
 
 1. Start the API server
+
 Run the following file from project root:
 
 `./api/v1/app.py`
 
 To start the project's local server to allow for API calls
+
 2. Launch the CLI
+
 Start the CLI using:
 
 `python3 main.py`
