@@ -7,19 +7,23 @@ The system is built on the following assumptions:
 
 - Practitioner Registry Integration: The system fetches practitioner data (such as name and profession type) by providing a registration number and their professional category (e.g., Nurse).
 
-*******It is assumed the system has access to the necessary government databases and union registries for data validation and retrieval
+*******It is assumed the system has access to the necessary government databases and union registries for data validation and retrieval******************
 ## Platform
-**This system is optimized for and works best on Ubuntu Linux environments.
+
+******This system is optimized for and works best on Ubuntu Linux environments.
 ## Accessing Start-Up Data
 Startup data is stored in the following directories:
 
-Children’s birth certificate numbers:
+- Children’s birth certificate numbers:
+
 `utils/proxy/data/children.py`
 
-Adult citizens' ID numbers:
+- Adult citizens' ID numbers:
+
 `utils/proxy/data/citizens.py`
 
-Practitioners’ registration IDs and profession types:
+- Practitioners’ registration IDs and profession types:
+
 `utils/proxy/data/practitioners`
 
 These datasets are necessary to successfully register and authenticate users into the system.
@@ -28,11 +32,15 @@ To start the system, follow these steps:
 
 1. Start the API server
 Run the following file from project root:
+
 `./api/v1/app.py`
+
 To start the project's local server to allow for API calls
 2. Launch the CLI
 Start the CLI using:
+
 `python3 main.py`
+
 **NOTE**: Once in the CLI, **Double-click**** every input to ensure proper CLI interaction.
 ## System Features
 Upon startup, the CLI system offers a variety of features and workflows:
@@ -42,7 +50,7 @@ Upon startup, the CLI system offers a variety of features and workflows:
 - Link (sign up) to existing programs.
 - View a list of all assigned patients.
 
-***Practitioners can only view patients that are assigned to them.
+********Practitioners can only view patients that are assigned to them.*************
 
 ### Patient Features
 - Sign in, sign out, and create an account.
@@ -64,7 +72,7 @@ Upon sign-in, users are routed to their respective dashboards:
 Language: Python
 Backend: Flask (for REST API)
 Database ORM: SQLAlchemy
-Documentation & Style
-Codebase is written following Google-style documentation for clarity and consistency.
+Documentation & Style:
+    Codebase is written following Google-style documentation for clarity and consistency.
 All development was done in VIM, the developer's preferred code editor.
 ```
