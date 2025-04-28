@@ -43,6 +43,10 @@ Run the following file from the project root:
 
 To start the project's local server to allow for API calls
 
+To view all the available `RESTful APIs`, open your favourite browser and cURL:
+
+`http://localhost:5000/#/`
+
 **2. Launch the CLI**
 
 Start the CLI using:
@@ -142,5 +146,52 @@ All development was done in VIM, the developer's preferred code editor.
 ```
 
 # PROTOTYPE
-## PROGRAM INITIALIZATION
+Below are but a few glimps of what the simple Health Information System can do in
+additione to managing programs and patients: the prerequisites.
+## Progrma Initialization
+Make sure the `./api/v1/app.py` is running
 ![My Diagram](assets/CEMA_HIS_START_UP.png)
+
+## Acount Creation
+For all new user, an account must be created to access the HIS
+A user will always be prompted to what `account type` they want to create
+![My Diagram](assets/CEMA_HIS_ACCOUNT_CREATION.png)
+
+### Adult Account Creation
+All the listed information must be provide
+![My Diagram](assets/CEMA_HIS_ADULT_ACCOUNT_CREATION.png)
+
+### Practitioner Account Creation
+Same as Adult, all the listed information must be included
+![My Diagram](assets/CEMA_HIS_PRACTITIONER_ACCOUNT_CREATION.png)
+
+## Log In
+After a user account is created, they can always log in to utilise the system
+A user will be always prompted into which `account type` to log into
+![My Diagram](assets/CEMA_HIS_LOGIN.png)
+
+### Adult Log In
+To login an adult must provide the email and password used on account creation
+![My Diagram](assets/CEMA_HIS_ADULT_LOGIN.png)
+
+### Practitoner Login 
+To login, a practitioner must provide the email used in account creation
+![My Diagram](assets/CEMA_HIS_PRACTITIONER_LOGIN.png)
+
+## Menus
+These are the system interaction points.
+
+They differ with every account. And When a user logs in, they are directed accordingly
+the the appropriate User `MENU` interface
+
+### Adult Menu
+To enjoy what they system is capable of for an `Adult User` please play around with these
+options in the menu
+![My Diagram](assets/CEMA_HIS_ADULT_MENU.png)
+
+### Practitioner Menu
+To have a feel of what a practitioner can do with this simple Health Information system,
+   try doodle around with the selection options below
+![My Diagram](assets/CEMA_HIS_PRACTITIONER_MENU.png)
+
+**ENJOY
