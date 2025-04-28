@@ -33,5 +33,7 @@ def login_adult(data):
     if user is not None and user.verify_password(password):
         access_token = create_access_token(identity=user.id)
         mes = 'Sucessfully Logged In'
-        return jsonify({'message': mes, 'access_token': access_token}), 200
+        return jsonify(
+            {'message': mes, 'account_type': user.account_type,
+             'access_token': access_token}), 200
     return jsonify({'message': 'invalid email or password.'}), 401

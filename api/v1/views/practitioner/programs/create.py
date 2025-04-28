@@ -7,7 +7,7 @@ from api.v1.services.practitioner.programs.create import create_practitioner_pro
 from api.v1.views.practitioner import practitioner
 
 
-@practitioner.route('/programs/<program_id>/create', methods=['GET'])
+@practitioner.route('/programs/<program_id>/create', methods=['POST'])
 @swag_from('/api/v1/views/practitioner/documentation/programs/create.yml')
 @jwt_required()
 def create_program(program_id):

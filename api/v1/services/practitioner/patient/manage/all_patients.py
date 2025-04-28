@@ -55,7 +55,8 @@ def all_patients():
                     "age": str(identity.age),
                     "gender": identity.gender,
                     "loginfo_id": profile.id,
-                    "type": profile.account_type
+                    "type": profile.account_type,
+                    "program_in": appointment.program.name
                 }
                 patients_by_name[name].append(patient_details)
 
