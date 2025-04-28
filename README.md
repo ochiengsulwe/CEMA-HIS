@@ -35,7 +35,7 @@ Startup data is stored in the following directories:
 - Practitioners’ registration IDs and profession types:
 
 [To Access Valid Practitioners Profession Registraion Related Data for Practitioner
-Account Creation, Access This Link](./utils/proxy/data/practitioners)
+Account Creation, Access This Link](./utils/proxy/data/practitioners.py)
 
 These datasets are necessary to register and authenticate users into the system successfully.
 The above datasets represent various third-party databases we are querying to establish the authenticity of data a user is supplying into the system.
@@ -88,7 +88,7 @@ For Patients, when prompted on the `CLI`, you will have to provide:
 
 For Practitioners, you will have to provide:
 
-1. `Profession Registration Number` - which **MUST** be a valid one assigned to any practitioner user as stored in the [start-up data](./utils/proxy/data/practitioners)
+1. `Profession Registration Number` - which **MUST** be a valid one assigned to any practitioner user as stored in the [start-up data](./utils/proxy/data/practitioners.py)
 2. `email` - can be any email/character format, but must not be as one a user of type `practitioner` has signed in with already.
 3. `password` - can be any character string
 4. `phone number` - can be any phone number, unique, not to be existing with any user registered of type `practitioner`
