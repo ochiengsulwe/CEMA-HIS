@@ -1,6 +1,16 @@
 # CLI Health Information System
  ## Overview
 This is a Command-Line Interface (CLI) Health Information System developed to manage patient-practitioner interactions and the management of patient-related data. It provides a secure and organized way for patients and practitioners to access, sign up for, and manage healthcare programs.
+## Purpose
+The Program is built to help `Practitioners` manage programs they are running.
+
+A practitioner can `add` a `patient` to a `program` they are part of. Though not in the technical sense. What happens is that `A Practitioner` will always sign up to be part of a `program` they would want to run(which are available already in the system on startup), and then the `Patients` are given the liberty to choose both `Program` and `Practitioner` they would want to be engaged in.
+
+This means that for a `Patient` to enjoy the full benefit of this utility, they must also have an account to track their programs as well as set reminders on when and what they are expected to take part in.
+
+So, a `Practitioner` can access available `programs` which come with the system, they can help onboard `Patients` onto a `program`, they can view their `patients` the same way the `patients` can view all their `appointments` related to a program they are enrolled in. 
+
+Something to NOTE: `Patients` can enrol with the same `practitioner` offering different `programs` but CANNOT enroll in the same `program` twice with the same `practitioner`.
 ## Asumptions
 The system is built on the following assumptions:
 - National Registry Access: The system can retrieve adult user information (e.g., full names, date of birth, etc.) by inputting their ID number. For children, the system uses birth certificate numbers to access data.
