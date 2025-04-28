@@ -16,7 +16,7 @@ Startup data is stored in the following directories:
 
 - Children’s birth certificate numbers:
 
-[To access Valid Child Birth Certificate Numbers For Child User Creation, Access this File](./utils/proxy/data/children.py)
+[To Access Valid Child Birth Certificate Numbers For Child User Creation, Access This File](./utils/proxy/data/children.py)
 
 - Adult citizens' ID numbers:
 
@@ -158,7 +158,7 @@ Make sure the `./api/v1/app.py` is running
 For all new user, an account must be created to access the HIS
 A user will always be prompted to what `account type` they want to create
 
-![My Diagram](assets/CEMA_HIS_ACCOUNT_CREATION.png)
+![My Diagram](assets/CEMA_HIS_ACC_CREATION.png)
 
 ### Adult Account Creation
 All the listed information must be provide
