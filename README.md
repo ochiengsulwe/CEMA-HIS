@@ -140,3 +140,7 @@ Documentation & Style:
     Codebase is written following Google-style documentation for clarity and consistency.
 All development was done in VIM, the developer's preferred code editor.
 ```
+
+# PROTOTYPE
+## PROGRAM INITIALIZATION
+![My Diagram](assets/CEMA_HIS_START_UP.png)
