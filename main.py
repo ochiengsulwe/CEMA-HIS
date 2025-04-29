@@ -5,8 +5,26 @@ import sys
 
 TOKEN_FILE = '.cema_token'
 SESSION_FILE = '.session_data'
-
 API_URL = 'http://localhost:5000'
+SESSION_TEMPLATES = {
+    'adult': {
+        'user_type': None,
+        'program_id': None,
+        'practitioner_id': None,
+        'child_id': None,
+        'appointment_id': None,
+    },
+    'practitioner': {
+        'user_type': None,
+        'program_id': None,
+        'patient_id': None,
+        'planner_id': None,
+        'slot_id': None,
+        'span_id': None,
+        'schedule_id': None,
+        'appointment_id': None,
+    },
+}
 
 
 def clear_input_buffer():
@@ -44,6 +62,11 @@ def save_session_data(data):
         json.dump(data, f)
 
 
+def clear_session_data():
+    with open(SESSION_FILE, 'w') as f:
+        json.dump({}, f)
+
+
 def get_session_data():
     if os.path.exists(SESSION_FILE):
         with open(SESSION_FILE, 'r') as f:
@@ -72,21 +95,9 @@ def logout():
     if response.ok:
         print('Logout successful.')
         clear_token()
+        clear_session_data()
     else:
         print(f'Logout failed: {response.text}')
-
-
-def create_account():
-    account_type = input(
-        "Create a "
-        ":\n1. Adult Acccount\n2. "
-        "Practitioner Account\nEnter choice (1/2): ")
-    if account_type == '1':
-        create_adult_account()
-    if account_type == '2':
-        create_practitioner_account()
-    else:
-        return
 
 
 def login():
@@ -118,12 +129,10 @@ def login():
         save_token(token)
         user_type = data.get('account_type')
 
-        session_data = {
-            'user_type': user_type,
-            'program_id': None,
-            'practitioner_id': None,
-        }
-        save_session_data(session_data)
+        if user_type in SESSION_TEMPLATES:
+            session_data = SESSION_TEMPLATES[user_type].copy()
+            session_data['user_type'] = user_type
+            save_session_data(session_data)
 
         print('Login successful')
     else:
@@ -139,6 +148,19 @@ def login():
         else:
             print("Okay. You can try logging in again later.")
             return
+
+
+def create_account():
+    account_type = input(
+        "Create a "
+        ":\n1. Adult Acccount\n2. "
+        "Practitioner Account\nEnter choice (1/2): ")
+    if account_type == '1':
+        create_adult_account()
+    if account_type == '2':
+        create_practitioner_account()
+    else:
+        return
 
 
 def create_child_account():
